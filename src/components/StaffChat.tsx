@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useRef, useEffect, useCallback, useMemo } from "react";
+import { useState, useRef, useEffect, useCallback } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import {
   Send,
@@ -8,49 +8,118 @@ import {
   Loader2,
   AlertCircle,
   Sparkles,
-  LayoutPanelLeft,
+  TrendingUp,
+  AlertTriangle,
+  ArrowRightLeft,
+  Users,
+  Megaphone,
+  BarChart3,
+  ShieldCheck,
+  FileCheck,
 } from "lucide-react";
 import ChatMessageComponent from "./ChatMessage";
-import DecisionPanel from "./DecisionPanel";
 import type { ChatMessage } from "@/types/chat";
 import type { StarterPrompt } from "@/types/chat";
+
+/* ── Types ───────────────────────────────────────────────── */
+
+interface PipelineResult {
+  question: string;
+  intent: string;
+  forecast: string;
+  inventory_risk: string;
+  recommendation: string;
+  campaign_readiness: string;
+  roi: string;
+  governance: string;
+  audit_id: string;
+  answer: string;
+  provider_mode: string;
+}
+
+const BACKEND_URL = process.env.NEXT_PUBLIC_BACKEND_URL || "";
+
+const PLANNING_FALLBACK: PipelineResult = {
+  question: "",
+  intent: "planning_query",
+  forecast: "Demo planning mode active. Synthetic forecast: KWD 42,500 across 12 stores. Accessories +8% WoW.",
+  inventory_risk: "Synthetic planning risk generated. 3 SKUs below safety stock at Marina Mall. Avenues overstocked 22%.",
+  recommendation: "Recommended store transfer: 45 units from Avenues to Marina Mall. Schedule 2 additional staff for weekend peak at 360 Mall. Launch Ramadan early-bird campaign in Week 2.",
+  campaign_readiness: "Campaign readiness check complete. Ramadan early-bird campaign recommended for Week 2 launch.",
+  roi: "Estimated protected revenue: KWD 6,200/week from inventory transfer. Staff optimization saves KWD 1,800/week. Campaign ROI: 3.2x.",
+  governance: "Demo approval status: All recommendations within policy limits. No discount exceeds 15% threshold.",
+  audit_id: `demo-${Date.now().toString(36)}`,
+  answer: "Demo planning mode active. Generated a structured recommendation using synthetic retail planning data.",
+  provider_mode: "deterministic_demo",
+};
 
 const STARTER_PROMPTS: StarterPrompt[] = [
   {
     label: "Weekly Planning Focus",
-    message:
-      "What should the planning team focus on this week across our Kuwait stores?",
+    message: "What should the planning team focus on this week across our Kuwait stores?",
   },
   {
     label: "Inventory Risk Review",
-    message:
-      "Are there any SKUs below safety stock or overstocked items that need transfer action?",
+    message: "Are there any SKUs below safety stock or overstocked items that need transfer action?",
   },
   {
     label: "Campaign Readiness",
-    message:
-      "What should we emphasize in a Ramadan premium accessories campaign for our Kuwait stores?",
+    message: "What should we emphasize in a Ramadan premium accessories campaign for our Kuwait stores?",
   },
   {
     label: "Workforce Planning",
-    message:
-      "Do we have adequate staffing for weekend peak traffic across Marina Mall and Avenues?",
+    message: "Do we have adequate staffing for weekend peak traffic across Marina Mall and Avenues?",
   },
 ];
+
+/* ── Planning card ───────────────────────────────────────── */
+
+function PlanningCard({
+  icon: Icon,
+  title,
+  content,
+  accent,
+}: {
+  icon: React.ComponentType<{ className?: string }>;
+  title: string;
+  content: string;
+  accent?: "gold" | "success" | "risk" | "info";
+}) {
+  const bg = {
+    gold: "border-[#B8954B]/15 bg-[#B8954B]/3",
+    success: "border-[#2F7D5C]/15 bg-[#2F7D5C]/3",
+    risk: "border-[#B85C38]/15 bg-[#B85C38]/3",
+    info: "border-[#5A7B9C]/15 bg-[#5A7B9C]/3",
+  };
+  const ic = {
+    gold: "text-[#B8954B]",
+    success: "text-[#2F7D5C]",
+    risk: "text-[#B85C38]",
+    info: "text-[#5A7B9C]",
+  };
+
+  return (
+    <div className={`rounded-2xl border p-4 ${accent ? bg[accent] : "border-[#E8E0D2] bg-white"}`}>
+      <div className="flex items-center gap-2 mb-2">
+        <Icon className={`h-3.5 w-3.5 ${accent ? ic[accent] : "text-[#6B6B6B]"}`} />
+        <h4 className={`text-[11px] font-semibold uppercase tracking-wider ${accent ? ic[accent] : "text-[#6B6B6B]"}`}>
+          {title}
+        </h4>
+      </div>
+      <p className="text-xs leading-relaxed text-[#1F1F1F] whitespace-pre-line">{content}</p>
+    </div>
+  );
+}
+
+/* ── Main component ──────────────────────────────────────── */
 
 export default function StaffChat() {
   const [messages, setMessages] = useState<ChatMessage[]>([]);
   const [input, setInput] = useState("");
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
+  const [latestPipeline, setLatestPipeline] = useState<PipelineResult | null>(null);
   const messagesEndRef = useRef<HTMLDivElement>(null);
-
-  // Derive latest assistant message for the right-side DecisionPanel
-  const latestAssistantMessage = useMemo(() => {
-    return [...messages]
-      .reverse()
-      .find((m) => m.role === "assistant")?.content || "";
-  }, [messages]);
 
   const scrollToBottom = useCallback(() => {
     messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
@@ -79,45 +148,47 @@ export default function StaffChat() {
       setIsLoading(true);
 
       try {
-        const res = await fetch("/api/chat", {
+        const res = await fetch(`${BACKEND_URL}/api/internal-copilot/ask`, {
           method: "POST",
           headers: { "Content-Type": "application/json" },
           body: JSON.stringify({
-            messages: updatedMessages.map((m) => ({
-              role: m.role,
-              content: m.content,
-            })),
+            question: content.trim(),
+            role: "executive",
+            context: { country: "Kuwait", planning_period: "next_week" },
           }),
         });
 
-        const data = await res.json();
+        if (!res.ok) throw new Error(`Backend returned ${res.status}`);
 
-        if (!res.ok || data.success === false) {
-          if (data.reply) {
-            const fallbackMessage: ChatMessage = {
-              id: `msg-${Date.now()}-ai`,
-              role: "assistant",
-              content: data.reply,
-              timestamp: Date.now(),
-            };
-            setMessages((prev) => [...prev, fallbackMessage]);
-            return;
-          }
-          throw new Error(data.error || "Request failed");
-        }
+        const data = (await res.json()) as PipelineResult;
+        setLatestPipeline(data);
 
         const assistantMessage: ChatMessage = {
           id: `msg-${Date.now()}-ai`,
           role: "assistant",
-          content: data.reply,
+          content: data.answer,
           timestamp: Date.now(),
         };
 
         setMessages((prev) => [...prev, assistantMessage]);
       } catch (err) {
-        const msg =
-          err instanceof Error ? err.message : "Something went wrong";
-        setError(msg);
+        // Use planning-oriented fallback
+        const fallback = { ...PLANNING_FALLBACK, question: content.trim(), audit_id: `demo-${Date.now().toString(36)}` };
+        setLatestPipeline(fallback);
+
+        const fallbackMessage: ChatMessage = {
+          id: `msg-${Date.now()}-ai`,
+          role: "assistant",
+          content: fallback.answer,
+          timestamp: Date.now(),
+        };
+        setMessages((prev) => [...prev, fallbackMessage]);
+
+        setError(
+          err instanceof Error
+            ? `Backend unreachable — showing demo planning data. (${err.message})`
+            : "Backend unreachable — showing demo planning data."
+        );
       } finally {
         setIsLoading(false);
       }
@@ -132,8 +203,23 @@ export default function StaffChat() {
 
   const clearChat = () => {
     setMessages([]);
+    setLatestPipeline(null);
     setError(null);
   };
+
+  // Derive workforce gap and transfer action from recommendation
+  const workforceGap = latestPipeline?.recommendation
+    ?.split(".")
+    .filter((s) => /staff|schedule|workforce/i.test(s))
+    .map((s) => s.trim())
+    .filter(Boolean)
+    .join(". ") || "";
+  const transferAction = latestPipeline?.recommendation
+    ?.split(".")
+    .filter((s) => /transfer|move|unit/i.test(s))
+    .map((s) => s.trim())
+    .filter(Boolean)
+    .join(". ") || "";
 
   return (
     <div className="grid grid-cols-1 gap-6 xl:grid-cols-[1.2fr_0.8fr]">
@@ -146,7 +232,11 @@ export default function StaffChat() {
             <span className="text-xs font-semibold uppercase tracking-wider text-[#6B6B6B]">
               Internal Copilot
             </span>
-            <span className="text-[10px] text-[#9A9590]">— Live via OpenAI</span>
+            {latestPipeline && (
+              <span className="badge severity-success text-[9px]">
+                {latestPipeline.provider_mode.replace(/_/g, " ")}
+              </span>
+            )}
           </div>
           <button
             onClick={clearChat}
@@ -207,21 +297,12 @@ export default function StaffChat() {
                 <Loader2 className="h-4 w-4 text-white animate-spin" />
               </div>
               <div className="flex gap-1">
-                <span
-                  className="h-2 w-2 rounded-full bg-[#B8954B] animate-bounce"
-                  style={{ animationDelay: "0ms" }}
-                />
-                <span
-                  className="h-2 w-2 rounded-full bg-[#B8954B] animate-bounce"
-                  style={{ animationDelay: "150ms" }}
-                />
-                <span
-                  className="h-2 w-2 rounded-full bg-[#B8954B] animate-bounce"
-                  style={{ animationDelay: "300ms" }}
-                />
+                <span className="h-2 w-2 rounded-full bg-[#B8954B] animate-bounce" style={{ animationDelay: "0ms" }} />
+                <span className="h-2 w-2 rounded-full bg-[#B8954B] animate-bounce" style={{ animationDelay: "150ms" }} />
+                <span className="h-2 w-2 rounded-full bg-[#B8954B] animate-bounce" style={{ animationDelay: "300ms" }} />
               </div>
               <span className="text-xs text-[#9A9590]">
-                Seraya is thinking...
+                Running planning pipeline...
               </span>
             </div>
           )}
@@ -265,24 +346,57 @@ export default function StaffChat() {
         </form>
       </div>
 
-      {/* ── Right: Decision Panel ─────────────────────────── */}
+      {/* ── Right: Planning Intelligence Panel ────────────── */}
       <div className="h-[720px] overflow-y-auto rounded-2xl border border-[#E8E0D2] bg-white p-5">
-        {latestAssistantMessage ? (
+        {latestPipeline ? (
           <motion.div
-            key={latestAssistantMessage.slice(0, 40)}
+            key={latestPipeline.audit_id}
             initial={{ opacity: 0, y: 10 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.35 }}
+            className="space-y-3"
           >
-            <DecisionPanel responseText={latestAssistantMessage} />
+            <div className="rounded-2xl border border-[#B8954B]/12 bg-gradient-to-br from-[#B8954B]/4 to-[#F8F5EF] p-4 mb-4">
+              <div className="text-[10px] uppercase tracking-[0.2em] text-[#B8954B]">
+                Planning Intelligence
+              </div>
+              <div className="mt-1 text-sm font-semibold text-[#1F1F1F]">
+                Structured Planning Output
+              </div>
+              <div className="mt-0.5 text-xs text-[#6B6B6B]">
+                Audit {latestPipeline.audit_id.slice(0, 8)}
+              </div>
+            </div>
+
+            <PlanningCard icon={TrendingUp} title="Sales Forecast" content={latestPipeline.forecast} accent="success" />
+            <PlanningCard icon={AlertTriangle} title="Inventory Risk" content={latestPipeline.inventory_risk} accent="risk" />
+            <PlanningCard
+              icon={ArrowRightLeft}
+              title="Transfer Action"
+              content={transferAction ? `${transferAction}.` : latestPipeline.recommendation}
+            />
+            <PlanningCard
+              icon={Users}
+              title="Workforce Gap"
+              content={workforceGap ? `${workforceGap}.` : "Staff levels aligned with forecasted traffic."}
+              accent="info"
+            />
+            <PlanningCard icon={Megaphone} title="Campaign Readiness" content={latestPipeline.campaign_readiness} />
+            <PlanningCard icon={BarChart3} title="ROI Impact" content={latestPipeline.roi} accent="success" />
+            <PlanningCard icon={ShieldCheck} title="Governance" content={latestPipeline.governance} />
+            <PlanningCard
+              icon={FileCheck}
+              title="Audit ID"
+              content={latestPipeline.audit_id}
+              accent="gold"
+            />
           </motion.div>
         ) : (
           <div className="flex flex-col items-center justify-center h-full text-center">
-            <LayoutPanelLeft className="h-10 w-10 text-[#DDD5C8] mb-4" />
-            <p className="text-sm font-medium text-[#6B6B6B]">Decision View</p>
+            <BarChart3 className="h-10 w-10 text-[#DDD5C8] mb-4" />
+            <p className="text-sm font-medium text-[#6B6B6B]">Planning Intelligence</p>
             <p className="mt-1 text-xs text-[#9A9590] max-w-[240px]">
-              Structured planning guidance will appear here after Seraya responds
-              to a question.
+              Planning output with forecast, risk, actions, and governance will appear here after you ask a question.
             </p>
           </div>
         )}
