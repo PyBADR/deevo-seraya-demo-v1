@@ -20,15 +20,15 @@ from typing import TypedDict
 
 from langgraph.graph import END, StateGraph
 
-from backend.app.database import write_audit_log
-from backend.app.services import (
+from app.database import write_audit_log
+from app.services import (
     conversion_simulator,
     intent_engine,
     internal_copilot,
     offer_engine,
     recommendation_engine,
 )
-from backend.app.services.llm_provider import (
+from app.services.llm_provider import (
     DETERMINISTIC_RESPONSES,
     MODE_DEMO,
     complete,

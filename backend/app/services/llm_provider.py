@@ -16,7 +16,7 @@ from __future__ import annotations
 import httpx
 from openai import AsyncOpenAI
 
-from backend.app.config import settings
+from app.config import settings
 
 # ── Provider mode labels ─────────────────────────────────────
 

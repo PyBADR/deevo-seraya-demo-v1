@@ -13,14 +13,16 @@ import psycopg2
 import pymongo
 import redis as redis_lib
 
-from backend.app.config import settings
+from app.config import settings
 
 # ── Connection helpers ───────────────────────────────────────
 
 
 def get_postgres():
+    if not settings.DATABASE_URL:
+        return None
     try:
-        conn = psycopg2.connect(settings.POSTGRES_URL)
+        conn = psycopg2.connect(settings.DATABASE_URL)
         conn.autocommit = True
         return conn
     except Exception:
@@ -28,8 +30,10 @@ def get_postgres():
 
 
 def get_mongo():
+    if not settings.MONGODB_URL:
+        return None
     try:
-        client = pymongo.MongoClient(settings.MONGO_URL, serverSelectionTimeoutMS=3000)
+        client = pymongo.MongoClient(settings.MONGODB_URL, serverSelectionTimeoutMS=3000)
         client.admin.command("ping")
         return client
     except Exception:

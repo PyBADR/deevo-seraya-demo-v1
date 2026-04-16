@@ -12,8 +12,8 @@ class Settings(BaseSettings):
     OLLAMA_MODEL: str = "llama3.2"
 
     # Database
-    POSTGRES_URL: str = "postgresql://seraya:seraya_local@localhost:5432/seraya"
-    MONGO_URL: str = "mongodb://seraya:seraya_local@localhost:27017"
+    DATABASE_URL: str = ""
+    MONGODB_URL: str = "mongodb://localhost:27017"
     REDIS_URL: str = "redis://localhost:6379"
 
     # API security
@@ -21,6 +21,7 @@ class Settings(BaseSettings):
 
     # App
     APP_ENV: str = "development"
+    FRONTEND_URL: str = "http://localhost:3000"
 
     model_config = {"env_file": ".env", "extra": "ignore"}
 

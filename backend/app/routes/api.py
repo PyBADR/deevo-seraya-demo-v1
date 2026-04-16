@@ -5,12 +5,11 @@ from __future__ import annotations
 from fastapi import APIRouter, Depends, Header, HTTPException
 from pydantic import BaseModel
 
-from backend.app.config import settings
-from backend.app.database import check_mongo, check_postgres, check_redis
-from backend.app.pipeline import run_pipeline
-from backend.app.services.customer_assistant import ask_assistant
-from backend.app.services.internal_copilot import ask_copilot
-from backend.app.services.llm_provider import (
+from app.config import settings
+from app.database import check_mongo, check_postgres, check_redis
+from app.pipeline import run_pipeline
+from app.services.customer_assistant import ask_assistant
+from app.services.llm_provider import (
     check_lmstudio,
     check_ollama,
     check_openai,
@@ -34,6 +33,8 @@ async def verify_api_key(x_deevo_api_key: str | None = Header(None)):
 class AskRequest(BaseModel):
     question: str
     session_id: str | None = None
+    role: str | None = None
+    context: dict | None = None
 
 
 class AskResponse(BaseModel):
@@ -42,20 +43,6 @@ class AskResponse(BaseModel):
 
 
 class PipelineResponse(BaseModel):
-    question: str
-    intent: str
-    forecast: str
-    inventory_risk: str
-    recommendation: str
-    campaign_readiness: str
-    roi: str
-    governance: str
-    audit_id: str
-    answer: str
-    provider_mode: str
-
-
-class FocusResponse(BaseModel):
     question: str
     intent: str
     forecast: str
@@ -105,10 +92,10 @@ async def customer_assistant_ask(req: AskRequest):
 # ── Internal copilot ─────────────────────────────────────────
 
 
-@router.post("/internal-copilot/ask", response_model=AskResponse, dependencies=[Depends(verify_api_key)])
+@router.post("/internal-copilot/ask", response_model=PipelineResponse, dependencies=[Depends(verify_api_key)])
 async def internal_copilot_ask(req: AskRequest):
-    result = await ask_copilot(req.question)
-    return AskResponse(answer=result["answer"], provider_mode=result["mode"])
+    result = await run_pipeline(req.question)
+    return PipelineResponse(**result)
 
 
 # ── Full pipeline ────────────────────────────────────────────
@@ -123,8 +110,8 @@ async def pipeline_run(req: AskRequest):
 # ── Planning focus ───────────────────────────────────────────
 
 
-@router.post("/planning/focus", response_model=FocusResponse, dependencies=[Depends(verify_api_key)])
+@router.post("/planning/focus", response_model=PipelineResponse, dependencies=[Depends(verify_api_key)])
 async def planning_focus(req: AskRequest):
     question = req.question or "What should the planning team focus on this week?"
     result = await run_pipeline(question)
-    return FocusResponse(**result)
+    return PipelineResponse(**result)

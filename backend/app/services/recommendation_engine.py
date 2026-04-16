@@ -1,6 +1,6 @@
 """Recommendation engine — generates actionable retail planning recommendations."""
 
-from backend.app.services.llm_provider import complete
+from app.services.llm_provider import complete
 
 SYSTEM_PROMPT = (
     "You are a retail planning advisor for premium Middle East fashion retail. "

@@ -1,6 +1,6 @@
 """Offer engine — evaluates campaign readiness and promotional offers."""
 
-from backend.app.services.llm_provider import complete
+from app.services.llm_provider import complete
 
 SYSTEM_PROMPT = (
     "You are a campaign readiness evaluator for premium Middle East fashion retail. "

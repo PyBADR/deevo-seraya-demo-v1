@@ -3,7 +3,8 @@
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 
-from backend.app.routes.api import router
+from app.config import settings
+from app.routes.api import router
 
 app = FastAPI(
     title="Seraya Retail Planning Co-Pilot",
@@ -11,9 +12,12 @@ app = FastAPI(
     version="1.0.0",
 )
 
+# CORS: restrict to FRONTEND_URL in production, allow all in development
+_origins = ["*"] if settings.APP_ENV == "development" else [settings.FRONTEND_URL]
+
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=["*"],
+    allow_origins=_origins,
     allow_credentials=True,
     allow_methods=["*"],
     allow_headers=["*"],

@@ -1,6 +1,6 @@
 """Intent classification engine — determines what the user is asking about."""
 
-from backend.app.services.llm_provider import complete
+from app.services.llm_provider import complete
 
 SYSTEM_PROMPT = (
     "You are an intent classifier for a retail planning copilot. "
