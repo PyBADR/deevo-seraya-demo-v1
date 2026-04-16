@@ -17,7 +17,7 @@ export function TextAreaEditor({
 }: TextAreaEditorProps) {
   return (
     <div className="space-y-2">
-      <label className="block text-xs font-semibold uppercase tracking-wider text-[#888]">
+      <label className="block text-xs font-semibold uppercase tracking-wider text-[#6b6560]">
         {label}
       </label>
       <textarea
@@ -25,7 +25,7 @@ export function TextAreaEditor({
         onChange={(e) => onChange(e.target.value)}
         rows={rows}
         placeholder={placeholder}
-        className="w-full rounded-lg border border-[#2a2a2a] bg-[#0a0a0a] px-4 py-3 text-sm text-white placeholder-[#444] focus:border-[#c9a84c]/40 focus:outline-none transition-colors font-mono leading-relaxed resize-y"
+        className="w-full rounded-xl border border-[#e8e4dc] bg-[#faf8f4] px-4 py-3 text-sm text-[#2d2d2d] placeholder-[#9a958e] focus:border-[#b09560]/40 focus:outline-none transition-colors font-mono leading-relaxed resize-y"
       />
     </div>
   );
@@ -46,7 +46,7 @@ export function TextInputEditor({
 }: TextInputEditorProps) {
   return (
     <div className="space-y-2">
-      <label className="block text-xs font-semibold uppercase tracking-wider text-[#888]">
+      <label className="block text-xs font-semibold uppercase tracking-wider text-[#6b6560]">
         {label}
       </label>
       <input
@@ -54,7 +54,7 @@ export function TextInputEditor({
         value={value}
         onChange={(e) => onChange(e.target.value)}
         placeholder={placeholder}
-        className="w-full rounded-lg border border-[#2a2a2a] bg-[#0a0a0a] px-4 py-2.5 text-sm text-white placeholder-[#444] focus:border-[#c9a84c]/40 focus:outline-none transition-colors"
+        className="w-full rounded-xl border border-[#e8e4dc] bg-[#faf8f4] px-4 py-2.5 text-sm text-[#2d2d2d] placeholder-[#9a958e] focus:border-[#b09560]/40 focus:outline-none transition-colors"
       />
     </div>
   );
@@ -69,14 +69,14 @@ export function StatusMessage({ message, type }: StatusMessageProps) {
   if (!message) return null;
 
   const colors = {
-    success: "text-[#22c55e] bg-[#22c55e]/10 border-[#22c55e]/20",
-    error: "text-[#ef4444] bg-[#ef4444]/10 border-[#ef4444]/20",
-    info: "text-[#6b9fff] bg-[#6b9fff]/10 border-[#6b9fff]/20",
+    success: "text-[#3d8b5f] bg-[#3d8b5f]/8 border-[#3d8b5f]/15",
+    error: "text-[#c45040] bg-[#c45040]/8 border-[#c45040]/15",
+    info: "text-[#5a7fb8] bg-[#5a7fb8]/8 border-[#5a7fb8]/15",
   };
 
   return (
     <div
-      className={`rounded-lg border px-4 py-2.5 text-sm ${colors[type]}`}
+      className={`rounded-xl border px-4 py-2.5 text-sm ${colors[type]}`}
     >
       {message}
     </div>

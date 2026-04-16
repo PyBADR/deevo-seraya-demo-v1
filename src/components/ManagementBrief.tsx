@@ -75,8 +75,8 @@ export default function ManagementBrief() {
     <div className="space-y-6">
       {/* Presets */}
       <div>
-        <p className="text-xs font-semibold uppercase tracking-wider text-[#888] mb-3">
-          Quick Brief Templates
+        <p className="text-xs font-semibold uppercase tracking-wider text-[#6b6560] mb-3">
+          Brief Templates
         </p>
         <div className="grid grid-cols-1 sm:grid-cols-2 gap-2">
           {BRIEF_PRESETS.map((preset) => (
@@ -87,12 +87,12 @@ export default function ManagementBrief() {
                 setResult(null);
                 setError(null);
               }}
-              className="rounded-lg border border-[#2a2a2a] bg-[#141414] px-4 py-3 text-left hover:border-[#3a3a3a] transition-all"
+              className="rounded-xl border border-[#e8e4dc] bg-white px-4 py-3 text-left hover:border-[#ddd8d0] transition-all"
             >
-              <span className="text-xs font-medium text-[#c9a84c]">
+              <span className="text-xs font-medium text-[#b09560]">
                 {preset.label}
               </span>
-              <p className="mt-1 text-[11px] text-[#666] line-clamp-2">
+              <p className="mt-1 text-[11px] text-[#9a958e] line-clamp-2">
                 {preset.situation}
               </p>
             </button>
@@ -101,30 +101,30 @@ export default function ManagementBrief() {
       </div>
 
       {/* Input */}
-      <div className="rounded-xl border border-[#2a2a2a] bg-[#141414] p-5 space-y-4">
+      <div className="rounded-2xl border border-[#e8e4dc] bg-white p-5 space-y-4">
         <div>
-          <label className="block text-xs font-semibold uppercase tracking-wider text-[#888] mb-2">
+          <label className="block text-xs font-semibold uppercase tracking-wider text-[#6b6560] mb-2">
             Situation
           </label>
           <textarea
             value={situation}
             onChange={(e) => setSituation(e.target.value)}
             rows={3}
-            placeholder="Describe the business situation requiring a management brief..."
-            className="w-full rounded-lg border border-[#2a2a2a] bg-[#0a0a0a] px-4 py-3 text-sm text-white placeholder-[#444] focus:border-[#c9a84c]/40 focus:outline-none resize-y transition-colors"
+            placeholder="Describe the business situation requiring an executive brief..."
+            className="w-full rounded-xl border border-[#e8e4dc] bg-[#faf8f4] px-4 py-3 text-sm text-[#2d2d2d] placeholder-[#9a958e] focus:border-[#b09560]/40 focus:outline-none resize-y transition-colors"
           />
         </div>
         <div>
-          <label className="block text-xs font-semibold uppercase tracking-wider text-[#888] mb-2">
+          <label className="block text-xs font-semibold uppercase tracking-wider text-[#6b6560] mb-2">
             Additional Context{" "}
-            <span className="text-[#555]">(optional)</span>
+            <span className="text-[#9a958e]">(optional)</span>
           </label>
           <input
             type="text"
             value={context}
             onChange={(e) => setContext(e.target.value)}
             placeholder="Any relevant data points, constraints, or prior decisions..."
-            className="w-full rounded-lg border border-[#2a2a2a] bg-[#0a0a0a] px-4 py-2.5 text-sm text-white placeholder-[#444] focus:border-[#c9a84c]/40 focus:outline-none transition-colors"
+            className="w-full rounded-xl border border-[#e8e4dc] bg-[#faf8f4] px-4 py-2.5 text-sm text-[#2d2d2d] placeholder-[#9a958e] focus:border-[#b09560]/40 focus:outline-none transition-colors"
           />
         </div>
       </div>
@@ -134,7 +134,7 @@ export default function ManagementBrief() {
         <button
           onClick={generateBrief}
           disabled={isLoading || !situation.trim()}
-          className="flex items-center gap-2.5 rounded-xl border border-[#c9a84c]/40 bg-gradient-to-r from-[#c9a84c]/10 to-[#a08838]/10 px-8 py-3 text-sm font-semibold text-[#c9a84c] transition-all hover:from-[#c9a84c]/20 hover:to-[#a08838]/20 disabled:opacity-50 disabled:cursor-not-allowed"
+          className="flex items-center gap-2.5 rounded-xl border border-[#b09560]/30 bg-gradient-to-r from-[#b09560]/8 to-[#9a8050]/8 px-8 py-3 text-sm font-semibold text-[#b09560] transition-all hover:from-[#b09560]/15 hover:to-[#9a8050]/15 disabled:opacity-50 disabled:cursor-not-allowed"
         >
           {isLoading ? (
             <>
@@ -144,16 +144,16 @@ export default function ManagementBrief() {
           ) : (
             <>
               <FileText className="h-4 w-4" />
-              Generate Management Brief
+              Generate Executive Brief
             </>
           )}
         </button>
       </div>
 
       {error && (
-        <div className="flex items-center gap-2 rounded-lg border border-[#ef4444]/20 bg-[#ef4444]/5 px-4 py-3">
-          <AlertTriangle className="h-4 w-4 text-[#ef4444]" />
-          <p className="text-xs text-[#ef4444]">{error}</p>
+        <div className="flex items-center gap-2 rounded-xl border border-[#c45040]/15 bg-[#c45040]/5 px-4 py-3">
+          <AlertTriangle className="h-4 w-4 text-[#c45040]" />
+          <p className="text-xs text-[#c45040]">{error}</p>
         </div>
       )}
 
@@ -171,44 +171,44 @@ export default function ManagementBrief() {
             <SectionCard icon={BarChart3} title="Executive Brief" accent>
               <div className="space-y-4">
                 <div>
-                  <p className="text-xs uppercase tracking-wider text-[#666] mb-1">
+                  <p className="text-xs uppercase tracking-wider text-[#9a958e] mb-1">
                     Situation
                   </p>
-                  <p className="text-sm text-white font-medium">
+                  <p className="text-sm text-[#2d2d2d] font-medium">
                     {result.situation}
                   </p>
                 </div>
                 <div>
-                  <p className="text-xs uppercase tracking-wider text-[#666] mb-1">
+                  <p className="text-xs uppercase tracking-wider text-[#9a958e] mb-1">
                     Business Implication
                   </p>
-                  <p className="text-sm text-[#ccc]">
+                  <p className="text-sm text-[#4a4540]">
                     {result.businessImplication}
                   </p>
                 </div>
-                <div className="rounded-lg bg-[#c9a84c]/5 border border-[#c9a84c]/15 px-4 py-3">
-                  <p className="text-xs uppercase tracking-wider text-[#c9a84c] mb-1">
+                <div className="rounded-xl bg-[#b09560]/5 border border-[#b09560]/12 px-4 py-3">
+                  <p className="text-xs uppercase tracking-wider text-[#b09560] mb-1">
                     Recommended Decision
                   </p>
-                  <p className="text-sm text-white font-medium">
+                  <p className="text-sm text-[#2d2d2d] font-medium">
                     {result.recommendedDecision}
                   </p>
                 </div>
-                <div className="rounded-lg bg-[#ef4444]/5 border border-[#ef4444]/15 px-4 py-3">
-                  <p className="text-xs uppercase tracking-wider text-[#ef4444] mb-1">
+                <div className="rounded-xl bg-[#c45040]/4 border border-[#c45040]/12 px-4 py-3">
+                  <p className="text-xs uppercase tracking-wider text-[#c45040] mb-1">
                     Operational Risk
                   </p>
-                  <p className="text-sm text-[#ddd]">
+                  <p className="text-sm text-[#4a4540]">
                     {result.operationalRisk}
                   </p>
                 </div>
-                <div className="flex items-center gap-2 rounded-lg bg-[#0a0a0a] border border-[#1f1f1f] px-4 py-3">
-                  <ArrowRight className="h-4 w-4 text-[#c9a84c] shrink-0" />
+                <div className="flex items-center gap-2 rounded-xl bg-[#faf8f4] border border-[#e8e4dc] px-4 py-3">
+                  <ArrowRight className="h-4 w-4 text-[#b09560] shrink-0" />
                   <div>
-                    <p className="text-xs uppercase tracking-wider text-[#666] mb-0.5">
+                    <p className="text-xs uppercase tracking-wider text-[#9a958e] mb-0.5">
                       Next Step
                     </p>
-                    <p className="text-sm text-white">{result.nextStep}</p>
+                    <p className="text-sm text-[#2d2d2d]">{result.nextStep}</p>
                   </div>
                 </div>
               </div>
@@ -221,9 +221,9 @@ export default function ManagementBrief() {
                   {result.topCustomerIntents.map((intent, i) => (
                     <li
                       key={i}
-                      className="flex items-start gap-2 text-sm text-[#ccc]"
+                      className="flex items-start gap-2 text-sm text-[#4a4540]"
                     >
-                      <span className="mt-1.5 h-1.5 w-1.5 rounded-full bg-[#22c55e] shrink-0" />
+                      <span className="mt-1.5 h-1.5 w-1.5 rounded-full bg-[#3d8b5f] shrink-0" />
                       {intent}
                     </li>
                   ))}
@@ -235,9 +235,9 @@ export default function ManagementBrief() {
                   {result.giftDemandSignals.map((signal, i) => (
                     <li
                       key={i}
-                      className="flex items-start gap-2 text-sm text-[#ccc]"
+                      className="flex items-start gap-2 text-sm text-[#4a4540]"
                     >
-                      <span className="mt-1.5 h-1.5 w-1.5 rounded-full bg-[#c9a84c] shrink-0" />
+                      <span className="mt-1.5 h-1.5 w-1.5 rounded-full bg-[#b09560] shrink-0" />
                       {signal}
                     </li>
                   ))}
@@ -249,9 +249,9 @@ export default function ManagementBrief() {
                   {result.staffKnowledgeGaps.map((gap, i) => (
                     <li
                       key={i}
-                      className="flex items-start gap-2 text-sm text-[#ccc]"
+                      className="flex items-start gap-2 text-sm text-[#4a4540]"
                     >
-                      <AlertCircle className="h-3 w-3 mt-0.5 shrink-0 text-[#f59e0b]" />
+                      <AlertCircle className="h-3 w-3 mt-0.5 shrink-0 text-[#c48a2a]" />
                       {gap}
                     </li>
                   ))}
@@ -259,12 +259,12 @@ export default function ManagementBrief() {
               </SectionCard>
 
               <SectionCard icon={Megaphone} title="Campaign Readiness">
-                <p className="text-sm text-[#ccc] leading-relaxed">
+                <p className="text-sm text-[#4a4540] leading-relaxed">
                   {result.campaignReadiness}
                 </p>
-                <div className="mt-3 rounded-lg bg-[#0a0a0a] border border-[#1f1f1f] px-3 py-2">
-                  <p className="text-xs text-[#666]">Recommended Next Action</p>
-                  <p className="text-sm text-[#c9a84c]">
+                <div className="mt-3 rounded-xl bg-[#faf8f4] border border-[#e8e4dc] px-3 py-2">
+                  <p className="text-xs text-[#9a958e]">Recommended Next Action</p>
+                  <p className="text-sm text-[#b09560]">
                     {result.recommendedNextAction}
                   </p>
                 </div>

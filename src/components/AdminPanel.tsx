@@ -7,7 +7,7 @@ import {
   Save,
   RotateCcw,
   BookOpen,
-  FlaskConical,
+  TrendingUp,
   Cpu,
   Rocket,
   Layers,
@@ -35,7 +35,6 @@ export default function AdminPanel() {
   } | null>(null);
   const [isSaving, setIsSaving] = useState(false);
 
-  // Load config and FAQ on mount
   useEffect(() => {
     Promise.all([
       fetch("/api/config").then((r) => r.json()),
@@ -152,26 +151,26 @@ export default function AdminPanel() {
   if (!config) {
     return (
       <div className="flex items-center justify-center py-20">
-        <Loader2 className="h-6 w-6 animate-spin text-[#c9a84c]" />
+        <Loader2 className="h-6 w-6 animate-spin text-[#b09560]" />
       </div>
     );
   }
 
   const adminTabs: { id: AdminTab; label: string; icon: typeof Settings }[] = [
     { id: "instructions", label: "Instructions", icon: Settings },
-    { id: "faq", label: "FAQ Editor", icon: BookOpen },
-    { id: "scenarios", label: "Scenarios", icon: FlaskConical },
-    { id: "runtime", label: "Runtime", icon: Cpu },
+    { id: "faq", label: "Knowledge Base", icon: BookOpen },
+    { id: "scenarios", label: "Planning Cases", icon: TrendingUp },
+    { id: "runtime", label: "System Health", icon: Cpu },
     { id: "architecture", label: "Architecture", icon: Layers },
   ];
 
   return (
     <div className="space-y-6">
       {/* Demo persistence notice */}
-      <div className="flex items-center gap-3 rounded-xl border border-[#c9a84c]/20 bg-[#c9a84c]/5 px-4 py-3">
-        <Settings className="h-4 w-4 text-[#c9a84c] shrink-0" />
-        <p className="text-xs text-[#999]">
-          <span className="font-semibold text-[#c9a84c]">Demo mode</span>
+      <div className="flex items-center gap-3 rounded-2xl border border-[#b09560]/15 bg-[#b09560]/5 px-4 py-3">
+        <Settings className="h-4 w-4 text-[#b09560] shrink-0" />
+        <p className="text-xs text-[#6b6560]">
+          <span className="font-semibold text-[#b09560]">Demo mode</span>
           {" — "}Changes are stored in server memory and will reset on restart. For production, connect a persistent database.
         </p>
       </div>
@@ -184,10 +183,10 @@ export default function AdminPanel() {
             <button
               key={tab.id}
               onClick={() => setActiveTab(tab.id)}
-              className={`flex items-center gap-2 whitespace-nowrap rounded-lg border px-4 py-2 text-xs font-medium transition-all ${
+              className={`flex items-center gap-2 whitespace-nowrap rounded-xl border px-4 py-2 text-xs font-medium transition-all ${
                 activeTab === tab.id
-                  ? "border-[#c9a84c]/40 bg-[#1a1a1a] text-white"
-                  : "border-[#2a2a2a] bg-[#141414] text-[#666] hover:text-[#aaa]"
+                  ? "border-[#b09560]/25 bg-white text-[#2d2d2d]"
+                  : "border-[#e8e4dc] bg-[#faf8f4] text-[#9a958e] hover:text-[#6b6560]"
               }`}
             >
               <Icon className="h-3.5 w-3.5" />
@@ -206,7 +205,7 @@ export default function AdminPanel() {
           <button
             onClick={activeTab === "faq" ? saveFaq : saveConfig}
             disabled={isSaving}
-            className="flex items-center gap-2 rounded-lg border border-[#c9a84c]/30 bg-[#c9a84c]/10 px-4 py-2 text-xs font-semibold text-[#c9a84c] hover:bg-[#c9a84c]/20 disabled:opacity-50 transition-all"
+            className="flex items-center gap-2 rounded-xl border border-[#b09560]/25 bg-[#b09560]/8 px-4 py-2 text-xs font-semibold text-[#b09560] hover:bg-[#b09560]/15 disabled:opacity-50 transition-all"
           >
             {isSaving ? (
               <Loader2 className="h-3.5 w-3.5 animate-spin" />
@@ -218,7 +217,7 @@ export default function AdminPanel() {
           <button
             onClick={resetAll}
             disabled={isSaving}
-            className="flex items-center gap-2 rounded-lg border border-[#2a2a2a] px-4 py-2 text-xs font-medium text-[#888] hover:text-white hover:border-[#3a3a3a] disabled:opacity-50 transition-all"
+            className="flex items-center gap-2 rounded-xl border border-[#e8e4dc] px-4 py-2 text-xs font-medium text-[#6b6560] hover:text-[#2d2d2d] hover:border-[#ddd8d0] disabled:opacity-50 transition-all"
           >
             <RotateCcw className="h-3.5 w-3.5" />
             Reset to Defaults
@@ -259,7 +258,7 @@ export default function AdminPanel() {
               rows={6}
             />
             <TextAreaEditor
-              label="Management Brief Style"
+              label="Executive Brief Style"
               value={config.briefStyle}
               onChange={(v) => updateConfigField("briefStyle", v)}
               rows={5}
@@ -280,12 +279,12 @@ export default function AdminPanel() {
         {activeTab === "faq" && (
           <div className="space-y-4">
             <div className="flex items-center justify-between">
-              <p className="text-xs text-[#888]">
+              <p className="text-xs text-[#6b6560]">
                 {faqItems.length} knowledge entries
               </p>
               <button
                 onClick={addFaqItem}
-                className="flex items-center gap-1.5 rounded-lg border border-[#2a2a2a] px-3 py-1.5 text-xs text-[#888] hover:text-white hover:border-[#3a3a3a] transition-all"
+                className="flex items-center gap-1.5 rounded-xl border border-[#e8e4dc] px-3 py-1.5 text-xs text-[#6b6560] hover:text-[#2d2d2d] hover:border-[#ddd8d0] transition-all"
               >
                 <Plus className="h-3 w-3" />
                 Add Entry
@@ -294,15 +293,15 @@ export default function AdminPanel() {
             {faqItems.map((item, i) => (
               <div
                 key={item.id}
-                className="rounded-xl border border-[#2a2a2a] bg-[#141414] p-4 space-y-3"
+                className="rounded-2xl border border-[#e8e4dc] bg-white p-4 space-y-3"
               >
                 <div className="flex items-center justify-between">
-                  <span className="text-[11px] text-[#555]">
+                  <span className="text-[11px] text-[#9a958e]">
                     Entry {i + 1}
                   </span>
                   <button
                     onClick={() => removeFaqItem(item.id)}
-                    className="text-[#555] hover:text-[#ef4444] transition-colors"
+                    className="text-[#9a958e] hover:text-[#c45040] transition-colors"
                   >
                     <Trash2 className="h-3.5 w-3.5" />
                   </button>
@@ -331,18 +330,18 @@ export default function AdminPanel() {
         {activeTab === "scenarios" && (
           <div className="space-y-4">
             <TextAreaEditor
-              label="Scenario Logic Notes"
+              label="Planning Case Notes"
               value={config.scenarioNotes}
               onChange={(v) => updateConfigField("scenarioNotes", v)}
               rows={8}
             />
-            <SectionCard icon={FlaskConical} title="How Scenarios Work">
-              <p className="text-sm text-[#999] leading-relaxed">
-                Scenario templates define the input parameters for AI-powered
-                simulations. When a user runs a scenario, the system combines
-                these templates with the scenario logic notes and sends them to
-                OpenAI for structured analysis. The AI returns customer intent,
-                objections, staff approach, and risk assessment.
+            <SectionCard icon={TrendingUp} title="How Planning Cases Work">
+              <p className="text-sm text-[#6b6560] leading-relaxed">
+                Planning case templates define the input parameters for AI-powered
+                forecasting. When a user runs a planning case, the system combines
+                these templates with the planning notes and sends them to the
+                AI provider for structured analysis. The AI returns customer intent,
+                objections, approach strategy, and risk assessment.
               </p>
             </SectionCard>
           </div>
@@ -356,26 +355,26 @@ export default function AdminPanel() {
               onChange={(v) => updateConfigField("modelOverride", v || "")}
               placeholder="e.g., gpt-4.1-mini, gpt-4o"
             />
-            <SectionCard icon={Cpu} title="Runtime Information">
-              <div className="space-y-2 text-sm text-[#999]">
+            <SectionCard icon={Cpu} title="System Health">
+              <div className="space-y-2 text-sm text-[#6b6560]">
                 <p>
-                  <span className="text-[#666]">Default model:</span>{" "}
+                  <span className="text-[#9a958e]">Default model:</span>{" "}
                   gpt-4.1-mini (via OPENAI_MODEL env or fallback)
                 </p>
                 <p>
-                  <span className="text-[#666]">Config persistence:</span>{" "}
+                  <span className="text-[#9a958e]">Config persistence:</span>{" "}
                   In-memory (resets on server restart)
                 </p>
                 <p>
-                  <span className="text-[#666]">Deployment target:</span>{" "}
-                  Vercel (frontend + API) or Railway (split backend)
+                  <span className="text-[#9a958e]">Deployment:</span>{" "}
+                  Vercel (frontend) + Railway (backend)
                 </p>
               </div>
             </SectionCard>
             <SectionCard icon={Rocket} title="Pilot Scope">
-              <div className="space-y-2 text-sm text-[#999]">
+              <div className="space-y-2 text-sm text-[#6b6560]">
                 <p>2-4 week internal pilot</p>
-                <p>Internal staff use only</p>
+                <p>Internal planning team use only</p>
                 <p>Controlled company knowledge base</p>
                 <p>No live inventory in Phase 1</p>
                 <p>
@@ -392,28 +391,28 @@ export default function AdminPanel() {
             {[
               {
                 icon: MessageSquare,
-                title: "Conversational Layer",
-                desc: "Live internal staff chat powered by OpenAI API. Config-driven system instructions with FAQ injection.",
+                title: "Internal Copilot",
+                desc: "Live planning chat powered by OpenAI API. Config-driven system instructions with knowledge base injection.",
               },
               {
                 icon: Brain,
                 title: "Decision Layer",
-                desc: "Transforms staff questions into structured guidance — approach strategies, objection handling, and cultural context.",
+                desc: "Transforms planning questions into structured guidance — forecasting, inventory risk, workforce gaps, and campaign readiness.",
               },
               {
                 icon: Search,
-                title: "Simulation Layer",
-                desc: "Tests likely customer intent, objections, and campaign behavior before real-world deployment.",
+                title: "Planning Forecast",
+                desc: "Tests likely customer intent, demand signals, and campaign behavior before real-world deployment.",
               },
               {
                 icon: BookOpen,
                 title: "Knowledge Layer",
-                desc: "Company-controlled instructions, FAQ entries, and scenario templates. Editable without code changes.",
+                desc: "Company-controlled instructions, knowledge entries, and planning case templates. Editable without code changes.",
               },
               {
                 icon: BarChart3,
-                title: "Management Layer",
-                desc: "Executive summaries and briefs for managers and decision-makers. Actionable, not analytical.",
+                title: "Executive Layer",
+                desc: "Executive briefs for managers and decision-makers. Actionable, governance-checked, audit-ready.",
               },
             ].map((layer, i) => (
               <motion.div
@@ -427,7 +426,7 @@ export default function AdminPanel() {
                   title={layer.title}
                   accent={i === 0}
                 >
-                  <p className="text-sm text-[#999] leading-relaxed">
+                  <p className="text-sm text-[#6b6560] leading-relaxed">
                     {layer.desc}
                   </p>
                 </SectionCard>

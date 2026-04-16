@@ -2,7 +2,7 @@
 
 // ─────────────────────────────────────────────────────────────
 // DecisionPanel — Parses Seraya's structured 7-part output
-// into individual executive-styled cards.
+// into individual planning-styled cards.
 // ─────────────────────────────────────────────────────────────
 
 type DecisionSections = {
@@ -47,11 +47,11 @@ function PanelCard({
   value: string;
 }) {
   return (
-    <div className="rounded-2xl border border-white/10 bg-white/5 p-4 backdrop-blur-sm">
-      <div className="mb-2 text-xs font-medium uppercase tracking-[0.18em] text-amber-300/80">
+    <div className="rounded-2xl border border-[#e8e4dc] bg-[#faf8f4] p-4">
+      <div className="mb-2 text-xs font-medium uppercase tracking-[0.18em] text-[#b09560]">
         {title}
       </div>
-      <div className="text-sm leading-6 text-zinc-100 whitespace-pre-wrap">
+      <div className="text-sm leading-6 text-[#4a4540] whitespace-pre-wrap">
         {value}
       </div>
     </div>
@@ -63,15 +63,15 @@ export default function DecisionPanel({ responseText }: Props) {
 
   return (
     <div className="space-y-4">
-      <div className="rounded-2xl border border-amber-400/20 bg-gradient-to-br from-amber-400/10 to-white/5 p-5">
-        <div className="text-xs uppercase tracking-[0.2em] text-amber-300/80">
+      <div className="rounded-2xl border border-[#b09560]/15 bg-gradient-to-br from-[#b09560]/5 to-[#faf8f4] p-5">
+        <div className="text-xs uppercase tracking-[0.2em] text-[#b09560]">
           Decision View
         </div>
-        <div className="mt-2 text-lg font-semibold text-white">
-          Structured Retail Guidance
+        <div className="mt-2 text-lg font-semibold text-[#2d2d2d]">
+          Structured Planning Guidance
         </div>
-        <div className="mt-1 text-sm text-zinc-400">
-          This translates a chat response into a usable staff decision.
+        <div className="mt-1 text-sm text-[#6b6560]">
+          Translates a copilot response into actionable planning decisions.
         </div>
       </div>
 

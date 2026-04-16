@@ -17,24 +17,24 @@ import type { StarterPrompt } from "@/types/chat";
 
 const STARTER_PROMPTS: StarterPrompt[] = [
   {
-    label: "Eid Gift Guidance",
+    label: "Weekly Planning Focus",
     message:
-      "Customer needs an Eid gift for a female recipient, around 150 KWD, elegant but not flashy. What should staff recommend?",
+      "What should the planning team focus on this week across our Kuwait stores?",
   },
   {
-    label: "Corporate Gift Decision",
+    label: "Inventory Risk Review",
     message:
-      "Customer is unsure whether to choose watches or accessories for a premium corporate gift. How should we guide them?",
+      "Are there any SKUs below safety stock or overstocked items that need transfer action?",
   },
   {
-    label: "Hesitant VIP Approach",
-    message:
-      "Suggest the best staff approach for a hesitant high-value customer in Kuwait who is browsing alone.",
-  },
-  {
-    label: "Ramadan Campaign Strategy",
+    label: "Campaign Readiness",
     message:
       "What should we emphasize in a Ramadan premium accessories campaign for our Kuwait stores?",
+  },
+  {
+    label: "Workforce Planning",
+    message:
+      "Do we have adequate staffing for weekend peak traffic across Marina Mall and Avenues?",
   },
 ];
 
@@ -103,7 +103,7 @@ export default function StaffChat() {
             setMessages((prev) => [...prev, fallbackMessage]);
             return;
           }
-          throw new Error(data.error || "Chat request failed");
+          throw new Error(data.error || "Request failed");
         }
 
         const assistantMessage: ChatMessage = {
@@ -138,19 +138,19 @@ export default function StaffChat() {
   return (
     <div className="grid grid-cols-1 gap-6 xl:grid-cols-[1.2fr_0.8fr]">
       {/* ── Left: Chat UI ─────────────────────────────────── */}
-      <div className="flex flex-col h-[720px] rounded-xl border border-[#2a2a2a] bg-[#0e0e0e] overflow-hidden">
+      <div className="flex flex-col h-[720px] rounded-2xl border border-[#e8e4dc] bg-white overflow-hidden">
         {/* Chat header */}
-        <div className="flex items-center justify-between border-b border-[#2a2a2a] px-5 py-3">
+        <div className="flex items-center justify-between border-b border-[#e8e4dc] px-5 py-3">
           <div className="flex items-center gap-2">
-            <div className="h-2 w-2 rounded-full bg-[#22c55e]" />
-            <span className="text-xs font-semibold uppercase tracking-wider text-[#999]">
-              Staff Intelligence Chat
+            <div className="h-2 w-2 rounded-full bg-[#3d8b5f]" />
+            <span className="text-xs font-semibold uppercase tracking-wider text-[#6b6560]">
+              Internal Copilot
             </span>
-            <span className="text-[10px] text-[#555]">— Live via OpenAI</span>
+            <span className="text-[10px] text-[#9a958e]">— Live via OpenAI</span>
           </div>
           <button
             onClick={clearChat}
-            className="flex items-center gap-1.5 rounded-lg px-3 py-1.5 text-[11px] text-[#666] hover:text-[#999] hover:bg-[#1a1a1a] transition-all"
+            className="flex items-center gap-1.5 rounded-lg px-3 py-1.5 text-[11px] text-[#9a958e] hover:text-[#6b6560] hover:bg-[#f5f3ef] transition-all"
           >
             <Trash2 className="h-3 w-3" />
             Clear
@@ -161,11 +161,11 @@ export default function StaffChat() {
         <div className="flex-1 overflow-y-auto px-5 py-4 space-y-4">
           {messages.length === 0 && !isLoading && (
             <div className="flex flex-col items-center justify-center h-full">
-              <Sparkles className="h-8 w-8 text-[#333] mb-3" />
-              <p className="text-sm text-[#555] mb-1">
-                Ask a retail intelligence question
+              <Sparkles className="h-8 w-8 text-[#ddd8d0] mb-3" />
+              <p className="text-sm text-[#6b6560] mb-1">
+                Ask a planning question
               </p>
-              <p className="text-xs text-[#444] mb-6">
+              <p className="text-xs text-[#9a958e] mb-6">
                 Or select a starter prompt below
               </p>
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-2 w-full max-w-lg">
@@ -173,13 +173,13 @@ export default function StaffChat() {
                   <button
                     key={prompt.label}
                     onClick={() => sendMessage(prompt.message)}
-                    className="rounded-lg border border-[#2a2a2a] bg-[#141414] px-3 py-2.5 text-left text-xs text-[#888] hover:text-white hover:border-[#3a3a3a] transition-all"
+                    className="rounded-xl border border-[#e8e4dc] bg-[#faf8f4] px-3 py-2.5 text-left text-xs text-[#6b6560] hover:text-[#2d2d2d] hover:border-[#ddd8d0] transition-all"
                   >
-                    <span className="font-medium text-[#c9a84c]">
+                    <span className="font-medium text-[#b09560]">
                       {prompt.label}
                     </span>
                     <br />
-                    <span className="text-[#666] line-clamp-2">
+                    <span className="text-[#9a958e] line-clamp-2">
                       {prompt.message}
                     </span>
                   </button>
@@ -203,24 +203,24 @@ export default function StaffChat() {
 
           {isLoading && (
             <div className="flex items-center gap-3 px-2 py-3">
-              <div className="flex h-8 w-8 items-center justify-center rounded-lg bg-gradient-to-br from-[#c9a84c] to-[#a08838]">
-                <Loader2 className="h-4 w-4 text-black animate-spin" />
+              <div className="flex h-8 w-8 items-center justify-center rounded-lg bg-gradient-to-br from-[#b09560] to-[#9a8050]">
+                <Loader2 className="h-4 w-4 text-white animate-spin" />
               </div>
               <div className="flex gap-1">
                 <span
-                  className="h-2 w-2 rounded-full bg-[#c9a84c] animate-bounce"
+                  className="h-2 w-2 rounded-full bg-[#b09560] animate-bounce"
                   style={{ animationDelay: "0ms" }}
                 />
                 <span
-                  className="h-2 w-2 rounded-full bg-[#c9a84c] animate-bounce"
+                  className="h-2 w-2 rounded-full bg-[#b09560] animate-bounce"
                   style={{ animationDelay: "150ms" }}
                 />
                 <span
-                  className="h-2 w-2 rounded-full bg-[#c9a84c] animate-bounce"
+                  className="h-2 w-2 rounded-full bg-[#b09560] animate-bounce"
                   style={{ animationDelay: "300ms" }}
                 />
               </div>
-              <span className="text-xs text-[#666]">
+              <span className="text-xs text-[#9a958e]">
                 Seraya is thinking...
               </span>
             </div>
@@ -230,10 +230,10 @@ export default function StaffChat() {
             <motion.div
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
-              className="flex items-center gap-2 rounded-lg border border-[#ef4444]/20 bg-[#ef4444]/5 px-4 py-3"
+              className="flex items-center gap-2 rounded-xl border border-[#c45040]/15 bg-[#c45040]/5 px-4 py-3"
             >
-              <AlertCircle className="h-4 w-4 text-[#ef4444] shrink-0" />
-              <p className="text-xs text-[#ef4444]">{error}</p>
+              <AlertCircle className="h-4 w-4 text-[#c45040] shrink-0" />
+              <p className="text-xs text-[#c45040]">{error}</p>
             </motion.div>
           )}
 
@@ -243,21 +243,21 @@ export default function StaffChat() {
         {/* Input area */}
         <form
           onSubmit={handleSubmit}
-          className="border-t border-[#2a2a2a] px-4 py-3"
+          className="border-t border-[#e8e4dc] px-4 py-3"
         >
           <div className="flex items-center gap-2">
             <input
               type="text"
               value={input}
               onChange={(e) => setInput(e.target.value)}
-              placeholder="Ask a retail intelligence question..."
+              placeholder="Ask a planning question..."
               disabled={isLoading}
-              className="flex-1 rounded-lg border border-[#2a2a2a] bg-[#141414] px-4 py-2.5 text-sm text-white placeholder-[#555] focus:border-[#c9a84c]/40 focus:outline-none disabled:opacity-50 transition-colors"
+              className="flex-1 rounded-xl border border-[#e8e4dc] bg-[#faf8f4] px-4 py-2.5 text-sm text-[#2d2d2d] placeholder-[#9a958e] focus:border-[#b09560]/40 focus:outline-none disabled:opacity-50 transition-colors"
             />
             <button
               type="submit"
               disabled={isLoading || !input.trim()}
-              className="flex h-10 w-10 items-center justify-center rounded-lg bg-gradient-to-br from-[#c9a84c] to-[#a08838] text-black transition-all hover:opacity-90 disabled:opacity-30 disabled:cursor-not-allowed"
+              className="flex h-10 w-10 items-center justify-center rounded-xl bg-gradient-to-br from-[#b09560] to-[#9a8050] text-white transition-all hover:opacity-90 disabled:opacity-30 disabled:cursor-not-allowed"
             >
               <Send className="h-4 w-4" />
             </button>
@@ -266,7 +266,7 @@ export default function StaffChat() {
       </div>
 
       {/* ── Right: Decision Panel ─────────────────────────── */}
-      <div className="h-[720px] overflow-y-auto rounded-xl border border-[#2a2a2a] bg-[#0e0e0e] p-5">
+      <div className="h-[720px] overflow-y-auto rounded-2xl border border-[#e8e4dc] bg-white p-5">
         {latestAssistantMessage ? (
           <motion.div
             key={latestAssistantMessage.slice(0, 40)}
@@ -278,11 +278,11 @@ export default function StaffChat() {
           </motion.div>
         ) : (
           <div className="flex flex-col items-center justify-center h-full text-center">
-            <LayoutPanelLeft className="h-10 w-10 text-[#222] mb-4" />
-            <p className="text-sm font-medium text-[#555]">Decision View</p>
-            <p className="mt-1 text-xs text-[#444] max-w-[240px]">
-              Structured retail guidance will appear here after Seraya responds
-              to a staff question.
+            <LayoutPanelLeft className="h-10 w-10 text-[#ddd8d0] mb-4" />
+            <p className="text-sm font-medium text-[#6b6560]">Decision View</p>
+            <p className="mt-1 text-xs text-[#9a958e] max-w-[240px]">
+              Structured planning guidance will appear here after Seraya responds
+              to a question.
             </p>
           </div>
         )}

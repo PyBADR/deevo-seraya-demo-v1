@@ -4,7 +4,7 @@ import { useState } from "react";
 import { motion } from "framer-motion";
 import {
   MessageSquare,
-  FlaskConical,
+  TrendingUp,
   Gift,
   BarChart3,
   Settings,
@@ -18,31 +18,31 @@ import AdminPanel from "./AdminPanel";
 const tabs = [
   {
     id: "chat",
-    label: "Staff Chat",
+    label: "Internal Copilot",
     icon: MessageSquare,
     component: StaffChat,
   },
   {
     id: "simulator",
-    label: "Scenario Simulator",
-    icon: FlaskConical,
+    label: "Planning Forecast",
+    icon: TrendingUp,
     component: ScenarioSimulator,
   },
   {
     id: "gifts",
-    label: "Gift Advisor",
+    label: "Clienteling Advisor",
     icon: Gift,
     component: GiftAdvisor,
   },
   {
     id: "brief",
-    label: "Management Brief",
+    label: "Executive Brief",
     icon: BarChart3,
     component: ManagementBrief,
   },
   {
     id: "admin",
-    label: "Admin",
+    label: "System Status",
     icon: Settings,
     component: AdminPanel,
   },
@@ -61,26 +61,22 @@ export default function DemoShell() {
       <div className="mx-auto max-w-7xl px-6 py-8">
         {/* Hero positioning statement */}
         <div className="mb-8 text-center">
-          <h2 className="text-2xl font-bold tracking-tight text-white sm:text-3xl">
-            Retail Intelligence{" "}
-            <span className="gold-gradient">Co-Pilot</span>
+          <h2 className="text-2xl font-bold tracking-tight text-[#2d2d2d] sm:text-3xl">
+            Retail Planning{" "}
+            <span className="gold-gradient">Copilot</span>
           </h2>
-          <p className="mx-auto mt-2 text-sm text-[#999]">
-            From staff questions to guided retail decisions.
+          <p className="mx-auto mt-2 text-sm text-[#6b6560]">
+            An internal AI copilot for sales forecasting, inventory risk,
+            workforce planning, campaign readiness, and auditable retail decisions.
           </p>
-          <p className="mx-auto mt-3 max-w-2xl text-xs leading-relaxed text-[#666]">
-            This is not a chatbot. It is an internal decision layer for retail
-            teams — turning customer situations into consistent staff actions,
-            gifting guidance, scenario simulation, and management insight.
-          </p>
-          <span className="mt-3 inline-block rounded-full border border-[#2a2a2a] bg-[#141414] px-3 py-1 text-[10px] uppercase tracking-wider text-[#555]">
-            Internal Retail Intelligence Demo
+          <span className="mt-3 inline-block rounded-full border border-[#e8e4dc] bg-white px-3 py-1 text-[10px] uppercase tracking-wider text-[#9a958e]">
+            Alyasra Retail Planning
           </span>
         </div>
 
         {/* Tab navigation */}
         <div className="mb-8 flex justify-center">
-          <nav className="inline-flex flex-wrap justify-center gap-1 rounded-xl border border-[#2a2a2a] bg-[#141414] p-1">
+          <nav className="inline-flex flex-wrap justify-center gap-1 rounded-xl border border-[#e8e4dc] bg-white p-1">
             {tabs.map((tab) => {
               const Icon = tab.icon;
               const isActive = activeTab === tab.id;
@@ -90,14 +86,14 @@ export default function DemoShell() {
                   onClick={() => setActiveTab(tab.id)}
                   className={`relative flex items-center gap-2 rounded-lg px-4 py-2.5 text-sm font-medium transition-all ${
                     isActive
-                      ? "text-white"
-                      : "text-[#666] hover:text-[#aaa]"
+                      ? "text-[#2d2d2d]"
+                      : "text-[#9a958e] hover:text-[#6b6560]"
                   }`}
                 >
                   {isActive && (
                     <motion.div
                       layoutId="activeTab"
-                      className="absolute inset-0 rounded-lg bg-[#1f1f1f] border border-[#c9a84c]/20"
+                      className="absolute inset-0 rounded-lg bg-[#f5f3ef] border border-[#b09560]/20"
                       transition={{
                         type: "spring",
                         stiffness: 400,
@@ -108,7 +104,7 @@ export default function DemoShell() {
                   <span className="relative z-10 flex items-center gap-2">
                     <Icon
                       className={`h-4 w-4 ${
-                        isActive ? "text-[#c9a84c]" : ""
+                        isActive ? "text-[#b09560]" : ""
                       }`}
                     />
                     <span className="hidden sm:inline">{tab.label}</span>

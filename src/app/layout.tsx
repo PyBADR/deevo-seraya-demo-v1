@@ -13,9 +13,9 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata: Metadata = {
-  title: "Seraya — Retail Intelligence Co-Pilot",
+  title: "Seraya — Retail Planning Copilot",
   description:
-    "Internal decision layer for retail teams. Turning customer situations into consistent staff actions, gifting guidance, scenario simulation, and management insight.",
+    "An internal AI copilot for sales forecasting, inventory risk, workforce planning, campaign readiness, and auditable retail decisions.",
 };
 
 export default function RootLayout({
@@ -28,7 +28,7 @@ export default function RootLayout({
       lang="en"
       className={`${geistSans.variable} ${geistMono.variable} h-full antialiased`}
     >
-      <body className="min-h-full flex flex-col bg-[#0a0a0a] text-[#f0f0f0]">
+      <body className="min-h-full flex flex-col bg-[#faf8f4] text-[#2d2d2d]">
         {children}
       </body>
     </html>
