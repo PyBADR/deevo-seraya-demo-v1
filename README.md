@@ -123,7 +123,26 @@ open http://localhost:3000
 | `REDIS_URL` | No | `redis://localhost:6379` | Redis connection |
 | `DEEVO_API_KEY` | For production | — | API key for Custom GPT access |
 
-**Security:** `OPENAI_API_KEY` is server-side only in both frontend and backend.
+**Security:** `OPENAI_API_KEY` is server-side only. It is never committed to git, never logged, never exposed to the frontend, and never returned by any API endpoint. The `/api/system/status` endpoint returns `openai_configured: true/false` to indicate whether a key is set, without revealing the key itself.
+
+### Railway Deployment — Setting the OpenAI Key
+
+The OpenAI API key must be set manually in the Railway dashboard. Never commit it to code.
+
+1. Open Railway dashboard: https://railway.com
+2. Select the **deevo-seraya-demo-v1-backend** service
+3. Go to **Variables**
+4. Set:
+   ```
+   LLM_PROVIDER=openai
+   OPENAI_MODEL=gpt-4.1-mini
+   OPENAI_API_KEY=<paste your key here>
+   ```
+5. Railway will automatically redeploy
+6. Verify: `curl https://<YOUR-RAILWAY-URL>/api/system/status`
+   - `openai_configured: true` confirms the key is loaded
+   - `mode: cloud_ai` confirms live AI responses
+7. If the key is missing or invalid, the backend falls back to `deterministic_demo` mode automatically
 
 ---
 
