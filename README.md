@@ -1,6 +1,6 @@
 # Seraya — Retail Intelligence Co-Pilot
 
-A premium internal AI decision-support platform for Middle East fashion retail teams. Combines live staff chat, gift guidance, scenario simulation, campaign testing, and management briefings — all powered by OpenAI.
+A premium internal AI decision-support platform for Middle East fashion retail teams. Combines live staff chat, gift guidance, scenario simulation, campaign testing, and management briefings — powered by a multi-provider LLM layer with LangGraph pipeline orchestration.
 
 > **This is not a chatbot.** It is an internal decision layer for retail teams — turning customer situations into consistent staff actions, structured recommendations, and executive-ready insight.
 
@@ -8,15 +8,22 @@ A premium internal AI decision-support platform for Middle East fashion retail t
 
 ## Overview
 
-Seraya is built as a unified Next.js application with a clear service-layer architecture. It runs entirely on Vercel today and is structured for future backend extraction to Railway when scaling demands it.
+Seraya is a two-tier application: a Next.js 16 frontend (Vercel) and a FastAPI backend (Railway) with a LangGraph planning pipeline, multi-provider LLM abstraction, and Dockerized data layer.
 
-**Current architecture:** Vercel-hosted unified Next.js 16 app (frontend + API routes + OpenAI integration).
-
-**Future architecture:** Vercel frontend + Railway service for AI/business logic + persistent config/data layer.
+```
+Frontend (Vercel)
+  → FastAPI Backend (Railway)
+    → LangGraph Pipeline
+      → LLM Provider Layer (OpenAI / Ollama / LM Studio / Deterministic)
+      → Dockerized Data Layer (PostgreSQL + MongoDB + Redis)
+      → Custom GPT Actions
+```
 
 ---
 
 ## Core Modules
+
+### Frontend (Next.js)
 
 | Module | Description | Endpoint |
 |---|---|---|
@@ -25,6 +32,16 @@ Seraya is built as a unified Next.js application with a clear service-layer arch
 | **Gift Advisor** | Occasion-based gift recommendation engine | `POST /api/gift` |
 | **Management Brief** | Executive summary generation for retail leadership | `POST /api/management-brief` |
 | **Admin** | Edit system instructions, FAQ, scenario templates, runtime settings | `GET/POST /api/config`, `/api/faq` |
+
+### Backend (FastAPI)
+
+| Module | Description | Endpoint |
+|---|---|---|
+| **System Status** | LLM provider, mode, and database connectivity | `GET /api/system/status` |
+| **Internal Copilot** | Planning team questions through LangGraph pipeline | `POST /api/internal-copilot/ask` |
+| **Customer Assistant** | Customer-facing queries via Custom GPT | `POST /api/customer-assistant/ask` |
+| **Pipeline** | Full LangGraph planning pipeline execution | `POST /api/pipeline/run` |
+| **Planning Focus** | This week's planning focus with full analysis | `POST /api/planning/focus` |
 
 ### Staff Chat — Decision Panel
 
@@ -57,14 +74,21 @@ If the AI model drifts from this format, a server-side normalizer reconstructs t
 git clone https://github.com/YOUR_ORG/deevo-seraya-demo-v1.git
 cd deevo-seraya-demo-v1
 
-# 2. Install dependencies
-npm install
+# 2. Start the data layer
+docker compose up -d
 
-# 3. Set up environment variables
+# 3. Set up backend
+cd backend
+cp .env.example .env
+pip install -r requirements.txt
+uvicorn backend.app.main:app --reload --port 8000
+# (run from repo root, or adjust PYTHONPATH)
+
+# 4. Set up frontend (in a separate terminal)
+cd ..
+npm install
 cp .env.example .env.local
 # Edit .env.local — add your OPENAI_API_KEY
-
-# 4. Clear any stale build cache and start
 rm -rf .next
 npm run dev
 
@@ -76,6 +100,8 @@ open http://localhost:3000
 
 ## Environment Variables
 
+### Frontend (.env.local)
+
 | Variable | Required | Default | Scope | Description |
 |---|---|---|---|---|
 | `OPENAI_API_KEY` | **Yes** | — | Server | Your OpenAI API key. Never exposed to the browser. |
@@ -83,14 +109,21 @@ open http://localhost:3000
 | `NEXT_PUBLIC_APP_NAME` | No | `Seraya Retail Intelligence Co-Pilot` | Client | App name visible in browser. |
 | `APP_ENV` | No | `development` | Server | Environment label. |
 
-**Future (Railway split only — not required now):**
+### Backend (backend/.env)
 
-| Variable | Description |
-|---|---|
-| `NEXT_PUBLIC_BASE_URL` | Vercel frontend URL |
-| `RAILWAY_API_BASE_URL` | Railway backend URL |
+| Variable | Required | Default | Description |
+|---|---|---|---|
+| `LLM_PROVIDER` | No | `deterministic` | `openai` / `lmstudio` / `ollama` / `deterministic` |
+| `OPENAI_API_KEY` | For cloud mode | — | OpenAI API key |
+| `OPENAI_MODEL` | No | `gpt-4.1-mini` | OpenAI model name |
+| `LMSTUDIO_BASE_URL` | For LM Studio | `http://localhost:1234/v1` | LM Studio server URL |
+| `OLLAMA_BASE_URL` | For Ollama | `http://localhost:11434` | Ollama server URL |
+| `POSTGRES_URL` | No | `postgresql://seraya:seraya_local@localhost:5432/seraya` | PostgreSQL connection |
+| `MONGO_URL` | No | `mongodb://seraya:seraya_local@localhost:27017` | MongoDB connection |
+| `REDIS_URL` | No | `redis://localhost:6379` | Redis connection |
+| `DEEVO_API_KEY` | For production | — | API key for Custom GPT access |
 
-**Security:** `OPENAI_API_KEY` is server-side only. It is never prefixed with `NEXT_PUBLIC_` and is never bundled into the client-side JavaScript. All API routes run in Vercel's serverless functions.
+**Security:** `OPENAI_API_KEY` is server-side only in both frontend and backend.
 
 ---
 
@@ -111,6 +144,8 @@ open http://localhost:3000
 
 ## Architecture
 
+### Frontend (src/)
+
 ```
 src/
 ├── app/
@@ -124,39 +159,55 @@ src/
 │   ├── layout.tsx
 │   ├── page.tsx
 │   └── globals.css
-├── components/
-│   ├── AdminPanel.tsx          # Config/FAQ/scenario editors (5 sub-tabs)
-│   ├── ChatMessage.tsx         # Chat bubble with avatar + timestamp
-│   ├── ConfigEditor.tsx        # Form field components
-│   ├── DecisionPanel.tsx       # 7-card structured decision renderer
-│   ├── DemoShell.tsx           # Tab navigation shell (5 tabs)
-│   ├── Footer.tsx              # Disclaimer footer
-│   ├── GiftAdvisor.tsx         # Gift recommendation form + results
-│   ├── ManagementBrief.tsx     # Brief generation form + results
-│   ├── ScenarioSimulator.tsx   # Simulation form + results
-│   ├── SectionCard.tsx         # Reusable card component
-│   ├── StaffChat.tsx           # Two-column chat + Decision Panel
-│   └── TopBar.tsx              # Header with status indicator
-├── data/
-│   ├── defaultConfig.ts        # System instruction + rules + tone
-│   ├── defaultFaq.ts           # 12 FAQ entries (GCC retail knowledge)
-│   ├── defaultScenarios.ts     # 5 scenario templates
-│   └── serayaMock.ts           # Legacy mock data (orphaned, harmless)
+├── components/           # UI components (12 total)
+├── data/                 # Default config, FAQ, scenarios
 ├── lib/
-│   ├── openai.ts               # Lazy-init OpenAI client singleton (Proxy)
-│   ├── configStore.ts          # In-memory config/FAQ/scenario store
-│   ├── faqEngine.ts            # Keyword-based FAQ retrieval engine
-│   ├── simulationEngine.ts     # Prompt builders for simulation/gift/brief
-│   ├── decisionEngine.ts       # Utility functions (scoring, labels)
+│   ├── openai.ts         # Lazy-init OpenAI client singleton
+│   ├── configStore.ts    # In-memory config store
+│   ├── faqEngine.ts      # Keyword-based FAQ retrieval
+│   └── services/         # Business logic (chat, gift, simulation, brief)
+└── types/                # TypeScript type definitions
+```
+
+### Backend (backend/)
+
+```
+backend/
+├── app/
+│   ├── main.py                        # FastAPI entry point
+│   ├── config.py                      # Pydantic settings (env vars)
+│   ├── database.py                    # PostgreSQL, MongoDB, Redis connections
+│   ├── pipeline.py                    # LangGraph planning pipeline (9 nodes)
+│   ├── routes/
+│   │   └── api.py                     # API routes (status, copilot, pipeline)
 │   └── services/
-│       ├── chatService.ts      # Chat business logic + output normalization
-│       ├── giftService.ts      # Gift advisor business logic + fallback
-│       ├── simulationService.ts # Scenario simulation logic + fallback
-│       └── briefService.ts     # Management brief logic + fallback
-└── types/
-    ├── chat.ts                 # ChatMessage, ChatRequest, StarterPrompt
-    ├── config.ts               # AppConfig, FaqItem, ScenarioTemplate
-    └── simulation.ts           # Simulation/Gift/Brief request + result types
+│       ├── llm_provider.py            # Multi-provider LLM abstraction
+│       ├── intent_engine.py           # Intent classification
+│       ├── recommendation_engine.py   # Action recommendations
+│       ├── offer_engine.py            # Campaign readiness evaluation
+│       ├── conversion_simulator.py    # ROI calculation
+│       ├── marketing_engine.py        # Marketing action generation
+│       ├── internal_copilot.py        # Internal team copilot
+│       └── customer_assistant.py      # Customer-facing assistant
+├── sql/
+│   └── init.sql                       # PostgreSQL schema
+├── requirements.txt
+└── .env.example
+```
+
+### LangGraph Pipeline Flow
+
+```
+question
+  → classify_intent
+  → fetch_planning_context
+  → forecast_sales
+  → check_inventory_risk
+  → recommend_transfer_staff_campaign_action
+  → calculate_roi
+  → apply_governance
+  → write_audit
+  → return_answer
 ```
 
 ### Service Layer Pattern
@@ -303,6 +354,7 @@ A polished, deployment-ready internal decision-support prototype that demonstrat
 
 ## Tech Stack
 
+### Frontend
 - **Framework:** Next.js 16 (App Router)
 - **Language:** TypeScript (strict mode)
 - **Styling:** Tailwind CSS 4
@@ -311,14 +363,54 @@ A polished, deployment-ready internal decision-support prototype that demonstrat
 - **AI:** OpenAI Responses API (gpt-4.1-mini default)
 - **Fonts:** Geist Sans + Geist Mono
 
+### Backend
+- **Framework:** FastAPI
+- **Language:** Python 3.11+
+- **Pipeline:** LangGraph
+- **LLM Providers:** OpenAI, Ollama, LM Studio, Deterministic
+- **Databases:** PostgreSQL, MongoDB, Redis (via Docker)
+
+---
+
+## Test Commands
+
+```bash
+# Start data layer
+docker compose up -d
+
+# Start backend (from repo root)
+cd backend && pip install -r requirements.txt && cd ..
+uvicorn backend.app.main:app --reload --port 8000
+
+# Start frontend (separate terminal)
+npm install
+npm run dev
+
+# Verify system status
+curl http://localhost:8000/api/system/status
+
+# Test internal copilot
+curl -X POST http://localhost:8000/api/internal-copilot/ask \
+  -H "Content-Type: application/json" \
+  -d '{"question": "What should the planning team focus on this week?"}'
+
+# Test planning focus (full pipeline)
+curl -X POST http://localhost:8000/api/planning/focus \
+  -H "Content-Type: application/json" \
+  -d '{"question": "What should the planning team focus on this week?"}'
+
+# Build frontend
+npm run build
+```
+
 ---
 
 ## Build Commands
 
 ```bash
-npm run dev      # Local development server
-npm run build    # Production build
-npm run start    # Start production server
+npm run dev      # Frontend development server
+npm run build    # Frontend production build
+npm run start    # Frontend production server
 npm run lint     # ESLint check
 ```
 

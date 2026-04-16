@@ -1,0 +1,201 @@
+openapi: 3.1.0
+info:
+  title: Seraya Retail Planning Co-Pilot
+  description: >
+    Custom GPT Actions API for Alyasra retail planning intelligence.
+    Provides internal copilot, customer assistant, pipeline execution,
+    and planning focus endpoints.
+  version: 1.0.0
+
+servers:
+  - url: https://YOUR-RAILWAY-BACKEND.up.railway.app
+    description: Production (Railway)
+
+security:
+  - apiKey: []
+
+components:
+  securitySchemes:
+    apiKey:
+      type: apiKey
+      in: header
+      name: X-DEEVO-API-KEY
+
+  schemas:
+    AskRequest:
+      type: object
+      required:
+        - question
+      properties:
+        question:
+          type: string
+          description: The question to ask
+        session_id:
+          type: string
+          description: Optional session ID for conversation continuity
+
+    AskResponse:
+      type: object
+      properties:
+        answer:
+          type: string
+        provider_mode:
+          type: string
+          enum:
+            - cloud_ai
+            - private_local_ai
+            - deterministic_demo
+
+    PipelineResponse:
+      type: object
+      properties:
+        question:
+          type: string
+        intent:
+          type: string
+        forecast:
+          type: string
+        inventory_risk:
+          type: string
+        recommendation:
+          type: string
+        campaign_readiness:
+          type: string
+        roi:
+          type: string
+        governance:
+          type: string
+        audit_id:
+          type: string
+        answer:
+          type: string
+        provider_mode:
+          type: string
+
+    SystemStatus:
+      type: object
+      properties:
+        llm_provider:
+          type: string
+        mode:
+          type: string
+          enum:
+            - cloud_ai
+            - private_local_ai
+            - deterministic_demo
+        openai_configured:
+          type: boolean
+        lmstudio_reachable:
+          type: boolean
+        ollama_reachable:
+          type: boolean
+        database_status:
+          type: object
+          properties:
+            postgres:
+              type: boolean
+            mongo:
+              type: boolean
+            redis:
+              type: boolean
+
+paths:
+  /api/system/status:
+    get:
+      operationId: getSystemStatus
+      summary: Get system status including LLM provider and database connectivity
+      responses:
+        "200":
+          description: System status
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/SystemStatus"
+
+  /api/customer-assistant/ask:
+    post:
+      operationId: askCustomerAssistant
+      summary: Ask the customer-facing retail assistant a question
+      security:
+        - apiKey: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/AskRequest"
+      responses:
+        "200":
+          description: Assistant response
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/AskResponse"
+        "401":
+          description: Invalid or missing API key
+
+  /api/internal-copilot/ask:
+    post:
+      operationId: askInternalCopilot
+      summary: Ask the internal planning copilot a question
+      security:
+        - apiKey: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/AskRequest"
+      responses:
+        "200":
+          description: Copilot response
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/AskResponse"
+        "401":
+          description: Invalid or missing API key
+
+  /api/pipeline/run:
+    post:
+      operationId: runPipeline
+      summary: Run the full LangGraph planning pipeline
+      security:
+        - apiKey: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/AskRequest"
+      responses:
+        "200":
+          description: Full pipeline result
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/PipelineResponse"
+        "401":
+          description: Invalid or missing API key
+
+  /api/planning/focus:
+    post:
+      operationId: getPlanningFocus
+      summary: Get this week's planning focus with full pipeline analysis
+      security:
+        - apiKey: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/AskRequest"
+      responses:
+        "200":
+          description: Planning focus result
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/PipelineResponse"
+        "401":
+          description: Invalid or missing API key
