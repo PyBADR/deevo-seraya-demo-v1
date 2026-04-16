@@ -29,7 +29,8 @@ interface PipelineResult {
   provider_mode: string;
 }
 
-const BACKEND_URL = process.env.NEXT_PUBLIC_BACKEND_URL || "";
+// Call local Next.js proxy (server-side adds DEEVO_API_KEY)
+const FOCUS_ENDPOINT = "/api/planning-focus";
 
 /* ── KPI preview card ─────────────────────────────────────── */
 
@@ -133,7 +134,7 @@ export default function PlanningDashboard() {
     setResult(null);
 
     try {
-      const res = await fetch(`${BACKEND_URL}/api/planning/focus`, {
+      const res = await fetch(FOCUS_ENDPOINT, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({

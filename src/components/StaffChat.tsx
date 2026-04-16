@@ -37,7 +37,8 @@ interface PipelineResult {
   provider_mode: string;
 }
 
-const BACKEND_URL = process.env.NEXT_PUBLIC_BACKEND_URL || "";
+// Call local Next.js proxy (server-side adds DEEVO_API_KEY)
+const COPILOT_ENDPOINT = "/api/internal-copilot";
 
 const PLANNING_FALLBACK: PipelineResult = {
   question: "",
@@ -148,7 +149,7 @@ export default function StaffChat() {
       setIsLoading(true);
 
       try {
-        const res = await fetch(`${BACKEND_URL}/api/internal-copilot/ask`, {
+        const res = await fetch(COPILOT_ENDPOINT, {
           method: "POST",
           headers: { "Content-Type": "application/json" },
           body: JSON.stringify({
