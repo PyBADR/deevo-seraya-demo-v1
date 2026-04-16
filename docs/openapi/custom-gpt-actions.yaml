@@ -8,7 +8,7 @@ info:
   version: 1.0.0
 
 servers:
-  - url: https://YOUR-RAILWAY-BACKEND.up.railway.app
+  - url: https://deevo-seraya-demo-v1-backend-production.up.railway.app
     description: Production (Railway)
 
 security:
