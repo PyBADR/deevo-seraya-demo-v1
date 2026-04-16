@@ -22,26 +22,26 @@ export default function SectionCard({
     <div
       className={`rounded-2xl border p-5 ${
         accent
-          ? "border-[#b09560]/20 bg-white gold-glow"
-          : "border-[#e8e4dc] bg-white"
+          ? "border-[#B8954B]/20 bg-white gold-glow"
+          : "border-[#E8E0D2] bg-white"
       }`}
     >
       <div className="flex items-center gap-2 mb-3">
         {Icon && (
           <Icon
-            className={`h-4 w-4 ${accent ? "text-[#b09560]" : "text-[#6b6560]"}`}
+            className={`h-4 w-4 ${accent ? "text-[#B8954B]" : "text-[#6B6B6B]"}`}
           />
         )}
         <h3
           className={`text-xs font-semibold uppercase tracking-wider ${
-            accent ? "text-[#b09560]" : "text-[#6b6560]"
+            accent ? "text-[#B8954B]" : "text-[#6B6B6B]"
           }`}
         >
           {title}
         </h3>
       </div>
       {subtitle && (
-        <p className="text-xs text-[#9a958e] mb-3">{subtitle}</p>
+        <p className="text-xs text-[#9A9590] mb-3">{subtitle}</p>
       )}
       {children}
     </div>

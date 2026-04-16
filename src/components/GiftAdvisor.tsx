@@ -75,30 +75,30 @@ function GiftOptionCard({
     <div
       className={`rounded-2xl border p-4 ${
         accent
-          ? "border-[#b09560]/20 bg-white gold-glow"
-          : "border-[#e8e4dc] bg-white"
+          ? "border-[#B8954B]/20 bg-white gold-glow"
+          : "border-[#E8E0D2] bg-white"
       }`}
     >
       <div className="flex items-center gap-2 mb-2">
         <Icon
-          className={`h-4 w-4 ${accent ? "text-[#b09560]" : "text-[#6b6560]"}`}
+          className={`h-4 w-4 ${accent ? "text-[#B8954B]" : "text-[#6B6B6B]"}`}
         />
         <span
           className={`text-xs font-semibold uppercase tracking-wider ${
-            accent ? "text-[#b09560]" : "text-[#6b6560]"
+            accent ? "text-[#B8954B]" : "text-[#6B6B6B]"
           }`}
         >
           {label}
         </span>
       </div>
-      <p className="text-sm font-medium text-[#2d2d2d] mb-1">
+      <p className="text-sm font-medium text-[#1F1F1F] mb-1">
         {option.suggestion}
       </p>
-      <p className="text-xs text-[#6b6560] mb-2">{option.category}</p>
-      <p className="text-xs text-[#b09560] font-medium mb-2">
+      <p className="text-xs text-[#6B6B6B] mb-2">{option.category}</p>
+      <p className="text-xs text-[#B8954B] font-medium mb-2">
         {option.priceRange}
       </p>
-      <p className="text-xs text-[#6b6560] leading-relaxed">{option.reasoning}</p>
+      <p className="text-xs text-[#6B6B6B] leading-relaxed">{option.reasoning}</p>
     </div>
   );
 }
@@ -152,15 +152,15 @@ export default function GiftAdvisor() {
         {(Object.keys(OPTIONS) as (keyof typeof OPTIONS)[]).map((field) => (
           <div
             key={field}
-            className="rounded-2xl border border-[#e8e4dc] bg-white p-4"
+            className="rounded-2xl border border-[#E8E0D2] bg-white p-4"
           >
-            <label className="block text-xs font-semibold uppercase tracking-wider text-[#6b6560] mb-2">
+            <label className="block text-xs font-semibold uppercase tracking-wider text-[#6B6B6B] mb-2">
               {field}
             </label>
             <select
               value={form[field]}
               onChange={(e) => updateField(field, e.target.value)}
-              className="w-full rounded-xl border border-[#e8e4dc] bg-[#faf8f4] px-3 py-2.5 text-sm text-[#2d2d2d] focus:border-[#b09560]/40 focus:outline-none transition-colors"
+              className="w-full rounded-xl border border-[#E8E0D2] bg-[#F8F5EF] px-3 py-2.5 text-sm text-[#1F1F1F] focus:border-[#B8954B]/40 focus:outline-none transition-colors"
             >
               {OPTIONS[field].map((opt) => (
                 <option key={opt} value={opt}>
@@ -177,7 +177,7 @@ export default function GiftAdvisor() {
         <button
           onClick={getAdvice}
           disabled={isLoading}
-          className="flex items-center gap-2.5 rounded-xl border border-[#b09560]/30 bg-gradient-to-r from-[#b09560]/8 to-[#9a8050]/8 px-8 py-3 text-sm font-semibold text-[#b09560] transition-all hover:from-[#b09560]/15 hover:to-[#9a8050]/15 disabled:opacity-50 disabled:cursor-not-allowed"
+          className="flex items-center gap-2.5 rounded-xl border border-[#B8954B]/30 bg-gradient-to-r from-[#B8954B]/8 to-[#A07F3E]/8 px-8 py-3 text-sm font-semibold text-[#B8954B] transition-all hover:from-[#B8954B]/15 hover:to-[#A07F3E]/15 disabled:opacity-50 disabled:cursor-not-allowed"
         >
           {isLoading ? (
             <>
@@ -194,9 +194,9 @@ export default function GiftAdvisor() {
       </div>
 
       {error && (
-        <div className="flex items-center gap-2 rounded-xl border border-[#c45040]/15 bg-[#c45040]/5 px-4 py-3">
-          <AlertTriangle className="h-4 w-4 text-[#c45040]" />
-          <p className="text-xs text-[#c45040]">{error}</p>
+        <div className="flex items-center gap-2 rounded-xl border border-[#B85C38]/15 bg-[#B85C38]/5 px-4 py-3">
+          <AlertTriangle className="h-4 w-4 text-[#B85C38]" />
+          <p className="text-xs text-[#B85C38]">{error}</p>
         </div>
       )}
 
@@ -232,7 +232,7 @@ export default function GiftAdvisor() {
 
             {/* Safe recommendation */}
             <SectionCard icon={Shield} title="Safe Recommendation" accent>
-              <p className="text-sm text-[#4a4540] leading-relaxed">
+              <p className="text-sm text-[#1F1F1F] leading-relaxed">
                 {result.safeRecommendation}
               </p>
             </SectionCard>
@@ -243,9 +243,9 @@ export default function GiftAdvisor() {
                 {result.staffTalkingPoints.map((point, i) => (
                   <li
                     key={i}
-                    className="flex items-start gap-2 text-sm text-[#4a4540]"
+                    className="flex items-start gap-2 text-sm text-[#1F1F1F]"
                   >
-                    <span className="mt-1 h-1.5 w-1.5 rounded-full bg-[#b09560] shrink-0" />
+                    <span className="mt-1 h-1.5 w-1.5 rounded-full bg-[#B8954B] shrink-0" />
                     {point}
                   </li>
                 ))}
@@ -254,23 +254,23 @@ export default function GiftAdvisor() {
 
             {/* Risk + next question */}
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
-              <div className="rounded-2xl border border-[#c45040]/12 bg-white p-4">
+              <div className="rounded-2xl border border-[#B85C38]/12 bg-white p-4">
                 <div className="flex items-center gap-2 mb-2">
-                  <AlertTriangle className="h-4 w-4 text-[#c45040]" />
-                  <span className="text-xs font-semibold uppercase tracking-wider text-[#c45040]">
+                  <AlertTriangle className="h-4 w-4 text-[#B85C38]" />
+                  <span className="text-xs font-semibold uppercase tracking-wider text-[#B85C38]">
                     Risk to Avoid
                   </span>
                 </div>
-                <p className="text-sm text-[#4a4540]">{result.riskToAvoid}</p>
+                <p className="text-sm text-[#1F1F1F]">{result.riskToAvoid}</p>
               </div>
-              <div className="rounded-2xl border border-[#5a7fb8]/12 bg-white p-4">
+              <div className="rounded-2xl border border-[#5A7B9C]/12 bg-white p-4">
                 <div className="flex items-center gap-2 mb-2">
-                  <HelpCircle className="h-4 w-4 text-[#5a7fb8]" />
-                  <span className="text-xs font-semibold uppercase tracking-wider text-[#5a7fb8]">
+                  <HelpCircle className="h-4 w-4 text-[#5A7B9C]" />
+                  <span className="text-xs font-semibold uppercase tracking-wider text-[#5A7B9C]">
                     Next Question to Ask
                   </span>
                 </div>
-                <p className="text-sm text-[#4a4540]">
+                <p className="text-sm text-[#1F1F1F]">
                   {result.nextQuestionToAsk}
                 </p>
               </div>

@@ -138,19 +138,19 @@ export default function StaffChat() {
   return (
     <div className="grid grid-cols-1 gap-6 xl:grid-cols-[1.2fr_0.8fr]">
       {/* ── Left: Chat UI ─────────────────────────────────── */}
-      <div className="flex flex-col h-[720px] rounded-2xl border border-[#e8e4dc] bg-white overflow-hidden">
+      <div className="flex flex-col h-[720px] rounded-2xl border border-[#E8E0D2] bg-white overflow-hidden">
         {/* Chat header */}
-        <div className="flex items-center justify-between border-b border-[#e8e4dc] px-5 py-3">
+        <div className="flex items-center justify-between border-b border-[#E8E0D2] px-5 py-3">
           <div className="flex items-center gap-2">
-            <div className="h-2 w-2 rounded-full bg-[#3d8b5f]" />
-            <span className="text-xs font-semibold uppercase tracking-wider text-[#6b6560]">
+            <div className="h-2 w-2 rounded-full bg-[#2F7D5C]" />
+            <span className="text-xs font-semibold uppercase tracking-wider text-[#6B6B6B]">
               Internal Copilot
             </span>
-            <span className="text-[10px] text-[#9a958e]">— Live via OpenAI</span>
+            <span className="text-[10px] text-[#9A9590]">— Live via OpenAI</span>
           </div>
           <button
             onClick={clearChat}
-            className="flex items-center gap-1.5 rounded-lg px-3 py-1.5 text-[11px] text-[#9a958e] hover:text-[#6b6560] hover:bg-[#f5f3ef] transition-all"
+            className="flex items-center gap-1.5 rounded-lg px-3 py-1.5 text-[11px] text-[#9A9590] hover:text-[#6B6B6B] hover:bg-[#F3F0E9] transition-all"
           >
             <Trash2 className="h-3 w-3" />
             Clear
@@ -161,11 +161,11 @@ export default function StaffChat() {
         <div className="flex-1 overflow-y-auto px-5 py-4 space-y-4">
           {messages.length === 0 && !isLoading && (
             <div className="flex flex-col items-center justify-center h-full">
-              <Sparkles className="h-8 w-8 text-[#ddd8d0] mb-3" />
-              <p className="text-sm text-[#6b6560] mb-1">
+              <Sparkles className="h-8 w-8 text-[#DDD5C8] mb-3" />
+              <p className="text-sm text-[#6B6B6B] mb-1">
                 Ask a planning question
               </p>
-              <p className="text-xs text-[#9a958e] mb-6">
+              <p className="text-xs text-[#9A9590] mb-6">
                 Or select a starter prompt below
               </p>
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-2 w-full max-w-lg">
@@ -173,13 +173,13 @@ export default function StaffChat() {
                   <button
                     key={prompt.label}
                     onClick={() => sendMessage(prompt.message)}
-                    className="rounded-xl border border-[#e8e4dc] bg-[#faf8f4] px-3 py-2.5 text-left text-xs text-[#6b6560] hover:text-[#2d2d2d] hover:border-[#ddd8d0] transition-all"
+                    className="rounded-xl border border-[#E8E0D2] bg-[#F8F5EF] px-3 py-2.5 text-left text-xs text-[#6B6B6B] hover:text-[#1F1F1F] hover:border-[#DDD5C8] transition-all"
                   >
-                    <span className="font-medium text-[#b09560]">
+                    <span className="font-medium text-[#B8954B]">
                       {prompt.label}
                     </span>
                     <br />
-                    <span className="text-[#9a958e] line-clamp-2">
+                    <span className="text-[#9A9590] line-clamp-2">
                       {prompt.message}
                     </span>
                   </button>
@@ -203,24 +203,24 @@ export default function StaffChat() {
 
           {isLoading && (
             <div className="flex items-center gap-3 px-2 py-3">
-              <div className="flex h-8 w-8 items-center justify-center rounded-lg bg-gradient-to-br from-[#b09560] to-[#9a8050]">
+              <div className="flex h-8 w-8 items-center justify-center rounded-lg bg-gradient-to-br from-[#B8954B] to-[#A07F3E]">
                 <Loader2 className="h-4 w-4 text-white animate-spin" />
               </div>
               <div className="flex gap-1">
                 <span
-                  className="h-2 w-2 rounded-full bg-[#b09560] animate-bounce"
+                  className="h-2 w-2 rounded-full bg-[#B8954B] animate-bounce"
                   style={{ animationDelay: "0ms" }}
                 />
                 <span
-                  className="h-2 w-2 rounded-full bg-[#b09560] animate-bounce"
+                  className="h-2 w-2 rounded-full bg-[#B8954B] animate-bounce"
                   style={{ animationDelay: "150ms" }}
                 />
                 <span
-                  className="h-2 w-2 rounded-full bg-[#b09560] animate-bounce"
+                  className="h-2 w-2 rounded-full bg-[#B8954B] animate-bounce"
                   style={{ animationDelay: "300ms" }}
                 />
               </div>
-              <span className="text-xs text-[#9a958e]">
+              <span className="text-xs text-[#9A9590]">
                 Seraya is thinking...
               </span>
             </div>
@@ -230,10 +230,10 @@ export default function StaffChat() {
             <motion.div
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
-              className="flex items-center gap-2 rounded-xl border border-[#c45040]/15 bg-[#c45040]/5 px-4 py-3"
+              className="flex items-center gap-2 rounded-xl border border-[#B85C38]/15 bg-[#B85C38]/5 px-4 py-3"
             >
-              <AlertCircle className="h-4 w-4 text-[#c45040] shrink-0" />
-              <p className="text-xs text-[#c45040]">{error}</p>
+              <AlertCircle className="h-4 w-4 text-[#B85C38] shrink-0" />
+              <p className="text-xs text-[#B85C38]">{error}</p>
             </motion.div>
           )}
 
@@ -243,7 +243,7 @@ export default function StaffChat() {
         {/* Input area */}
         <form
           onSubmit={handleSubmit}
-          className="border-t border-[#e8e4dc] px-4 py-3"
+          className="border-t border-[#E8E0D2] px-4 py-3"
         >
           <div className="flex items-center gap-2">
             <input
@@ -252,12 +252,12 @@ export default function StaffChat() {
               onChange={(e) => setInput(e.target.value)}
               placeholder="Ask a planning question..."
               disabled={isLoading}
-              className="flex-1 rounded-xl border border-[#e8e4dc] bg-[#faf8f4] px-4 py-2.5 text-sm text-[#2d2d2d] placeholder-[#9a958e] focus:border-[#b09560]/40 focus:outline-none disabled:opacity-50 transition-colors"
+              className="flex-1 rounded-xl border border-[#E8E0D2] bg-[#F8F5EF] px-4 py-2.5 text-sm text-[#1F1F1F] placeholder-[#9A9590] focus:border-[#B8954B]/40 focus:outline-none disabled:opacity-50 transition-colors"
             />
             <button
               type="submit"
               disabled={isLoading || !input.trim()}
-              className="flex h-10 w-10 items-center justify-center rounded-xl bg-gradient-to-br from-[#b09560] to-[#9a8050] text-white transition-all hover:opacity-90 disabled:opacity-30 disabled:cursor-not-allowed"
+              className="flex h-10 w-10 items-center justify-center rounded-xl bg-gradient-to-br from-[#B8954B] to-[#A07F3E] text-white transition-all hover:opacity-90 disabled:opacity-30 disabled:cursor-not-allowed"
             >
               <Send className="h-4 w-4" />
             </button>
@@ -266,7 +266,7 @@ export default function StaffChat() {
       </div>
 
       {/* ── Right: Decision Panel ─────────────────────────── */}
-      <div className="h-[720px] overflow-y-auto rounded-2xl border border-[#e8e4dc] bg-white p-5">
+      <div className="h-[720px] overflow-y-auto rounded-2xl border border-[#E8E0D2] bg-white p-5">
         {latestAssistantMessage ? (
           <motion.div
             key={latestAssistantMessage.slice(0, 40)}
@@ -278,9 +278,9 @@ export default function StaffChat() {
           </motion.div>
         ) : (
           <div className="flex flex-col items-center justify-center h-full text-center">
-            <LayoutPanelLeft className="h-10 w-10 text-[#ddd8d0] mb-4" />
-            <p className="text-sm font-medium text-[#6b6560]">Decision View</p>
-            <p className="mt-1 text-xs text-[#9a958e] max-w-[240px]">
+            <LayoutPanelLeft className="h-10 w-10 text-[#DDD5C8] mb-4" />
+            <p className="text-sm font-medium text-[#6B6B6B]">Decision View</p>
+            <p className="mt-1 text-xs text-[#9A9590] max-w-[240px]">
               Structured planning guidance will appear here after Seraya responds
               to a question.
             </p>

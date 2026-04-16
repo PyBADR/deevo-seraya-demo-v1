@@ -1,25 +1,25 @@
 @import "tailwindcss";
 
-/* ── Seraya Retail Planning — Quiet Luxury Theme ───────────── */
+/* ── Seraya Retail Planning Workbench — Quiet Luxury Theme ── */
 
 :root {
-  --background: #faf8f4;
-  --foreground: #2d2d2d;
-  --surface: #ffffff;
-  --surface-elevated: #ffffff;
-  --surface-hover: #f5f3ef;
-  --border: #e8e4dc;
-  --border-subtle: #efece6;
-  --gold: #b09560;
-  --gold-muted: #9a8050;
-  --gold-glow: rgba(176, 149, 96, 0.08);
-  --success: #3d8b5f;
-  --warning: #c48a2a;
-  --danger: #c45040;
-  --info: #5a7fb8;
-  --text-primary: #2d2d2d;
-  --text-secondary: #6b6560;
-  --text-muted: #9a958e;
+  --background: #F8F5EF;
+  --foreground: #1F1F1F;
+  --surface: #FFFFFF;
+  --surface-elevated: #FFFFFF;
+  --surface-hover: #F3F0E9;
+  --border: #E8E0D2;
+  --border-subtle: #EDE8DE;
+  --gold: #B8954B;
+  --gold-muted: #A07F3E;
+  --gold-glow: rgba(184, 149, 75, 0.07);
+  --success: #2F7D5C;
+  --warning: #B8854B;
+  --danger: #B85C38;
+  --info: #5A7B9C;
+  --text-primary: #1F1F1F;
+  --text-secondary: #6B6B6B;
+  --text-muted: #9A9590;
 }
 
 @theme inline {
@@ -45,7 +45,7 @@
 
 * {
   scrollbar-width: thin;
-  scrollbar-color: #ddd8d0 #faf8f4;
+  scrollbar-color: #DDD5C8 #F8F5EF;
 }
 
 body {
@@ -59,19 +59,19 @@ body {
 /* ── Gold accent utilities ───────────────────────────────── */
 
 .gold-gradient {
-  background: linear-gradient(135deg, #b09560 0%, #c9b080 50%, #b09560 100%);
+  background: linear-gradient(135deg, #B8954B 0%, #D4B06A 50%, #B8954B 100%);
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
   background-clip: text;
 }
 
 .gold-border {
-  border-color: rgba(176, 149, 96, 0.25);
+  border-color: rgba(184, 149, 75, 0.22);
 }
 
 .gold-glow {
-  box-shadow: 0 1px 12px rgba(176, 149, 96, 0.06),
-              0 0 24px rgba(176, 149, 96, 0.03);
+  box-shadow: 0 1px 12px rgba(184, 149, 75, 0.05),
+              0 0 24px rgba(184, 149, 75, 0.03);
 }
 
 /* ── Card surfaces ───────────────────────────────────────── */
@@ -86,7 +86,7 @@ body {
   background: var(--surface-elevated);
   border: 1px solid var(--border);
   border-radius: 14px;
-  box-shadow: 0 2px 16px rgba(0, 0, 0, 0.04);
+  box-shadow: 0 2px 16px rgba(0, 0, 0, 0.03);
 }
 
 /* ── Pulse animation for status indicators ─────────────── */
@@ -146,25 +146,25 @@ body {
 /* ── Severity colors ─────────────────────────────────────── */
 
 .severity-success {
-  background: rgba(61, 139, 95, 0.08);
-  color: #3d8b5f;
-  border: 1px solid rgba(61, 139, 95, 0.15);
+  background: rgba(47, 125, 92, 0.07);
+  color: #2F7D5C;
+  border: 1px solid rgba(47, 125, 92, 0.14);
 }
 
 .severity-warning {
-  background: rgba(196, 138, 42, 0.08);
-  color: #c48a2a;
-  border: 1px solid rgba(196, 138, 42, 0.15);
+  background: rgba(184, 133, 75, 0.07);
+  color: #B8854B;
+  border: 1px solid rgba(184, 133, 75, 0.14);
 }
 
 .severity-critical {
-  background: rgba(196, 80, 64, 0.08);
-  color: #c45040;
-  border: 1px solid rgba(196, 80, 64, 0.15);
+  background: rgba(184, 92, 56, 0.07);
+  color: #B85C38;
+  border: 1px solid rgba(184, 92, 56, 0.14);
 }
 
 .severity-info {
-  background: rgba(90, 127, 184, 0.08);
-  color: #5a7fb8;
-  border: 1px solid rgba(90, 127, 184, 0.15);
+  background: rgba(90, 123, 156, 0.07);
+  color: #5A7B9C;
+  border: 1px solid rgba(90, 123, 156, 0.14);
 }

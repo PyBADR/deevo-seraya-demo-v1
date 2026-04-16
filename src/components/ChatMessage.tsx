@@ -18,12 +18,12 @@ export default function ChatMessage({ message }: Props) {
       <div
         className={`flex h-8 w-8 shrink-0 items-center justify-center rounded-lg ${
           isUser
-            ? "bg-[#f5f3ef] border border-[#e8e4dc]"
-            : "bg-gradient-to-br from-[#b09560] to-[#9a8050]"
+            ? "bg-[#F3F0E9] border border-[#E8E0D2]"
+            : "bg-gradient-to-br from-[#B8954B] to-[#A07F3E]"
         }`}
       >
         {isUser ? (
-          <User className="h-4 w-4 text-[#6b6560]" />
+          <User className="h-4 w-4 text-[#6B6B6B]" />
         ) : (
           <Bot className="h-4 w-4 text-white" />
         )}
@@ -33,14 +33,14 @@ export default function ChatMessage({ message }: Props) {
       <div
         className={`max-w-[75%] rounded-2xl px-4 py-3 ${
           isUser
-            ? "bg-[#f5f3ef] border border-[#e8e4dc] text-[#2d2d2d]"
-            : "bg-white border border-[#b09560]/12 text-[#4a4540]"
+            ? "bg-[#F3F0E9] border border-[#E8E0D2] text-[#1F1F1F]"
+            : "bg-white border border-[#B8954B]/12 text-[#1F1F1F]"
         }`}
       >
         <p className="text-sm leading-relaxed whitespace-pre-wrap">
           {message.content}
         </p>
-        <p className="mt-1.5 text-[10px] text-[#9a958e]">
+        <p className="mt-1.5 text-[10px] text-[#9A9590]">
           {new Date(message.timestamp).toLocaleTimeString([], {
             hour: "2-digit",
             minute: "2-digit",

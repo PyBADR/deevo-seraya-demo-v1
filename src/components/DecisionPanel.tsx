@@ -47,11 +47,11 @@ function PanelCard({
   value: string;
 }) {
   return (
-    <div className="rounded-2xl border border-[#e8e4dc] bg-[#faf8f4] p-4">
-      <div className="mb-2 text-xs font-medium uppercase tracking-[0.18em] text-[#b09560]">
+    <div className="rounded-2xl border border-[#E8E0D2] bg-[#F8F5EF] p-4">
+      <div className="mb-2 text-xs font-medium uppercase tracking-[0.18em] text-[#B8954B]">
         {title}
       </div>
-      <div className="text-sm leading-6 text-[#4a4540] whitespace-pre-wrap">
+      <div className="text-sm leading-6 text-[#1F1F1F] whitespace-pre-wrap">
         {value}
       </div>
     </div>
@@ -63,14 +63,14 @@ export default function DecisionPanel({ responseText }: Props) {
 
   return (
     <div className="space-y-4">
-      <div className="rounded-2xl border border-[#b09560]/15 bg-gradient-to-br from-[#b09560]/5 to-[#faf8f4] p-5">
-        <div className="text-xs uppercase tracking-[0.2em] text-[#b09560]">
+      <div className="rounded-2xl border border-[#B8954B]/15 bg-gradient-to-br from-[#B8954B]/5 to-[#F8F5EF] p-5">
+        <div className="text-xs uppercase tracking-[0.2em] text-[#B8954B]">
           Decision View
         </div>
-        <div className="mt-2 text-lg font-semibold text-[#2d2d2d]">
+        <div className="mt-2 text-lg font-semibold text-[#1F1F1F]">
           Structured Planning Guidance
         </div>
-        <div className="mt-1 text-sm text-[#6b6560]">
+        <div className="mt-1 text-sm text-[#6B6B6B]">
           Translates a copilot response into actionable planning decisions.
         </div>
       </div>

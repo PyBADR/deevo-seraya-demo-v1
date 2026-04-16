@@ -132,8 +132,8 @@ export default function ScenarioSimulator() {
       {templates.length > 0 && (
         <div>
           <div className="flex items-center gap-2 mb-3">
-            <BookOpen className="h-4 w-4 text-[#6b6560]" />
-            <span className="text-xs font-semibold uppercase tracking-wider text-[#6b6560]">
+            <BookOpen className="h-4 w-4 text-[#6B6B6B]" />
+            <span className="text-xs font-semibold uppercase tracking-wider text-[#6B6B6B]">
               Planning Cases
             </span>
           </div>
@@ -142,7 +142,7 @@ export default function ScenarioSimulator() {
               <button
                 key={tpl.id}
                 onClick={() => applyTemplate(tpl)}
-                className="whitespace-nowrap rounded-xl border border-[#e8e4dc] bg-white px-3 py-2 text-xs text-[#6b6560] hover:text-[#2d2d2d] hover:border-[#ddd8d0] transition-all"
+                className="whitespace-nowrap rounded-xl border border-[#E8E0D2] bg-white px-3 py-2 text-xs text-[#6B6B6B] hover:text-[#1F1F1F] hover:border-[#DDD5C8] transition-all"
               >
                 {tpl.title}
               </button>
@@ -158,15 +158,15 @@ export default function ScenarioSimulator() {
         ).map((field) => (
           <div
             key={field}
-            className="rounded-2xl border border-[#e8e4dc] bg-white p-4"
+            className="rounded-2xl border border-[#E8E0D2] bg-white p-4"
           >
-            <label className="block text-xs font-semibold uppercase tracking-wider text-[#6b6560] mb-2">
+            <label className="block text-xs font-semibold uppercase tracking-wider text-[#6B6B6B] mb-2">
               {field.replace(/([A-Z])/g, " $1").trim()}
             </label>
             <select
               value={form[field]}
               onChange={(e) => updateField(field, e.target.value)}
-              className="w-full rounded-xl border border-[#e8e4dc] bg-[#faf8f4] px-3 py-2.5 text-sm text-[#2d2d2d] focus:border-[#b09560]/40 focus:outline-none transition-colors"
+              className="w-full rounded-xl border border-[#E8E0D2] bg-[#F8F5EF] px-3 py-2.5 text-sm text-[#1F1F1F] focus:border-[#B8954B]/40 focus:outline-none transition-colors"
             >
               {FIELD_OPTIONS[field].map((opt) => (
                 <option key={opt} value={opt}>
@@ -183,7 +183,7 @@ export default function ScenarioSimulator() {
         <button
           onClick={runSimulation}
           disabled={isRunning}
-          className="flex items-center gap-2.5 rounded-xl border border-[#b09560]/30 bg-gradient-to-r from-[#b09560]/8 to-[#9a8050]/8 px-8 py-3 text-sm font-semibold text-[#b09560] transition-all hover:from-[#b09560]/15 hover:to-[#9a8050]/15 disabled:opacity-50 disabled:cursor-not-allowed"
+          className="flex items-center gap-2.5 rounded-xl border border-[#B8954B]/30 bg-gradient-to-r from-[#B8954B]/8 to-[#A07F3E]/8 px-8 py-3 text-sm font-semibold text-[#B8954B] transition-all hover:from-[#B8954B]/15 hover:to-[#A07F3E]/15 disabled:opacity-50 disabled:cursor-not-allowed"
         >
           {isRunning ? (
             <>
@@ -201,9 +201,9 @@ export default function ScenarioSimulator() {
 
       {/* Error */}
       {error && (
-        <div className="flex items-center gap-2 rounded-xl border border-[#c45040]/15 bg-[#c45040]/5 px-4 py-3">
-          <AlertTriangle className="h-4 w-4 text-[#c45040]" />
-          <p className="text-xs text-[#c45040]">{error}</p>
+        <div className="flex items-center gap-2 rounded-xl border border-[#B85C38]/15 bg-[#B85C38]/5 px-4 py-3">
+          <AlertTriangle className="h-4 w-4 text-[#B85C38]" />
+          <p className="text-xs text-[#B85C38]">{error}</p>
         </div>
       )}
 
@@ -224,7 +224,7 @@ export default function ScenarioSimulator() {
             >
               <div className="space-y-4">
                 <div className="flex items-center justify-between">
-                  <span className="text-xs text-[#9a958e]">Confidence</span>
+                  <span className="text-xs text-[#9A9590]">Confidence</span>
                   <span
                     className={`badge ${
                       result.confidence >= 0.8
@@ -239,67 +239,67 @@ export default function ScenarioSimulator() {
                 </div>
 
                 <div>
-                  <p className="text-xs uppercase tracking-wider text-[#9a958e] mb-1">
+                  <p className="text-xs uppercase tracking-wider text-[#9A9590] mb-1">
                     Customer Intent
                   </p>
-                  <p className="text-sm text-[#2d2d2d]">{result.customerIntent}</p>
+                  <p className="text-sm text-[#1F1F1F]">{result.customerIntent}</p>
                 </div>
 
                 <div>
-                  <p className="text-xs uppercase tracking-wider text-[#9a958e] mb-1">
+                  <p className="text-xs uppercase tracking-wider text-[#9A9590] mb-1">
                     Recommended Approach
                   </p>
-                  <p className="text-sm text-[#4a4540]">
+                  <p className="text-sm text-[#1F1F1F]">
                     {result.recommendedStaffApproach}
                   </p>
                 </div>
 
                 <div>
-                  <p className="text-xs uppercase tracking-wider text-[#9a958e] mb-1">
+                  <p className="text-xs uppercase tracking-wider text-[#9A9590] mb-1">
                     Best Category Angle
                   </p>
-                  <p className="text-sm text-[#4a4540]">
+                  <p className="text-sm text-[#1F1F1F]">
                     {result.bestCategoryAngle}
                   </p>
                 </div>
 
                 <div>
-                  <p className="text-xs uppercase tracking-wider text-[#9a958e] mb-1">
+                  <p className="text-xs uppercase tracking-wider text-[#9A9590] mb-1">
                     Message Direction
                   </p>
-                  <p className="text-sm text-[#4a4540]">
+                  <p className="text-sm text-[#1F1F1F]">
                     {result.messageDirection}
                   </p>
                 </div>
 
                 <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                   <div>
-                    <p className="text-xs uppercase tracking-wider text-[#9a958e] mb-2">
+                    <p className="text-xs uppercase tracking-wider text-[#9A9590] mb-2">
                       Likely Objections
                     </p>
                     <ul className="space-y-1.5">
                       {result.likelyObjections.map((obj, i) => (
                         <li
                           key={i}
-                          className="flex items-start gap-2 text-sm text-[#4a4540]"
+                          className="flex items-start gap-2 text-sm text-[#1F1F1F]"
                         >
-                          <AlertTriangle className="h-3 w-3 mt-0.5 shrink-0 text-[#c48a2a]" />
+                          <AlertTriangle className="h-3 w-3 mt-0.5 shrink-0 text-[#B8854B]" />
                           {obj}
                         </li>
                       ))}
                     </ul>
                   </div>
                   <div>
-                    <p className="text-xs uppercase tracking-wider text-[#9a958e] mb-2">
+                    <p className="text-xs uppercase tracking-wider text-[#9A9590] mb-2">
                       Assumptions
                     </p>
                     <ul className="space-y-1.5">
                       {result.assumptions.map((a, i) => (
                         <li
                           key={i}
-                          className="flex items-start gap-2 text-sm text-[#4a4540]"
+                          className="flex items-start gap-2 text-sm text-[#1F1F1F]"
                         >
-                          <ShieldCheck className="h-3 w-3 mt-0.5 shrink-0 text-[#5a7fb8]" />
+                          <ShieldCheck className="h-3 w-3 mt-0.5 shrink-0 text-[#5A7B9C]" />
                           {a}
                         </li>
                       ))}
@@ -307,11 +307,11 @@ export default function ScenarioSimulator() {
                   </div>
                 </div>
 
-                <div className="rounded-xl border border-[#c45040]/12 bg-[#c45040]/4 px-4 py-3">
-                  <p className="text-xs uppercase tracking-wider text-[#c45040] mb-1">
+                <div className="rounded-xl border border-[#B85C38]/12 bg-[#B85C38]/4 px-4 py-3">
+                  <p className="text-xs uppercase tracking-wider text-[#B85C38] mb-1">
                     Risk to Avoid
                   </p>
-                  <p className="text-sm text-[#4a4540]">{result.riskToAvoid}</p>
+                  <p className="text-sm text-[#1F1F1F]">{result.riskToAvoid}</p>
                 </div>
               </div>
             </SectionCard>
