@@ -78,6 +78,9 @@ export default function DemoShell() {
             store actions, campaign readiness, workforce planning, ROI protection,
             and auditable retail decisions.
           </p>
+          <p className="mx-auto mt-1.5 text-xs text-[#9A9590]">
+            Built for planning, inventory, marketing, and data teams.
+          </p>
           <span className="mt-3 inline-block rounded-full border border-[#E8E0D2] bg-white px-3 py-1 text-[10px] uppercase tracking-wider text-[#9A9590]">
             Alyasra Retail Planning
           </span>

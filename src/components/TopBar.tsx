@@ -26,7 +26,7 @@ export default function TopBar() {
           <div className="flex items-center gap-2">
             <span className="h-2 w-2 rounded-full bg-[#2F7D5C] pulse-gold" />
             <span className="text-[11px] font-medium text-[#6B6B6B]">
-              Live — OpenAI Connected
+              AI Connected — Demo Data Mode
             </span>
           </div>
           <div className="hidden sm:block h-4 w-px bg-[#E8E0D2]" />

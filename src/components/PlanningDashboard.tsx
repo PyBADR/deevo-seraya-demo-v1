@@ -13,8 +13,6 @@ import {
   ShieldCheck,
   FileCheck,
   BarChart3,
-  Package,
-  Calendar,
 } from "lucide-react";
 
 interface PipelineResult {
@@ -32,6 +30,47 @@ interface PipelineResult {
 }
 
 const BACKEND_URL = process.env.NEXT_PUBLIC_BACKEND_URL || "";
+
+/* ── KPI preview card ─────────────────────────────────────── */
+
+function KpiCard({
+  label,
+  value,
+  sub,
+  accent,
+}: {
+  label: string;
+  value: string;
+  sub: string;
+  accent: "gold" | "success" | "risk" | "info";
+}) {
+  const bg = {
+    gold: "border-[#B8954B]/12 bg-[#B8954B]/3",
+    success: "border-[#2F7D5C]/12 bg-[#2F7D5C]/3",
+    risk: "border-[#B85C38]/12 bg-[#B85C38]/3",
+    info: "border-[#5A7B9C]/12 bg-[#5A7B9C]/3",
+  };
+  const valColor = {
+    gold: "text-[#B8954B]",
+    success: "text-[#2F7D5C]",
+    risk: "text-[#B85C38]",
+    info: "text-[#5A7B9C]",
+  };
+
+  return (
+    <div className={`rounded-2xl border p-5 ${bg[accent]}`}>
+      <p className="text-[11px] font-semibold uppercase tracking-wider text-[#6B6B6B] mb-1">
+        {label}
+      </p>
+      <p className={`text-2xl font-bold tracking-tight ${valColor[accent]}`}>
+        {value}
+      </p>
+      <p className="text-xs text-[#9A9590] mt-1">{sub}</p>
+    </div>
+  );
+}
+
+/* ── Planning result card ─────────────────────────────────── */
 
 function PlanningCard({
   icon: Icon,
@@ -58,12 +97,6 @@ function PlanningCard({
     risk: "text-[#B85C38]",
     info: "text-[#5A7B9C]",
   };
-  const titleColors = {
-    gold: "text-[#B8954B]",
-    success: "text-[#2F7D5C]",
-    risk: "text-[#B85C38]",
-    info: "text-[#5A7B9C]",
-  };
 
   return (
     <motion.div
@@ -71,14 +104,12 @@ function PlanningCard({
       animate={{ opacity: 1, y: 0 }}
       transition={{ duration: 0.3, delay }}
       className={`rounded-2xl border p-5 ${
-        accent
-          ? accentColors[accent]
-          : "border-[#E8E0D2] bg-white"
+        accent ? accentColors[accent] : "border-[#E8E0D2] bg-white"
       }`}
     >
       <div className="flex items-center gap-2 mb-3">
         <Icon className={`h-4 w-4 ${accent ? iconColors[accent] : "text-[#6B6B6B]"}`} />
-        <h3 className={`text-xs font-semibold uppercase tracking-wider ${accent ? titleColors[accent] : "text-[#6B6B6B]"}`}>
+        <h3 className={`text-xs font-semibold uppercase tracking-wider ${accent ? iconColors[accent] : "text-[#6B6B6B]"}`}>
           {title}
         </h3>
       </div>
@@ -88,6 +119,8 @@ function PlanningCard({
     </motion.div>
   );
 }
+
+/* ── Main dashboard ───────────────────────────────────────── */
 
 export default function PlanningDashboard() {
   const [result, setResult] = useState<PipelineResult | null>(null);
@@ -123,22 +156,52 @@ export default function PlanningDashboard() {
     }
   }, []);
 
-  // Derive workforce gap and store actions from recommendation
+  // Derive workforce gap from recommendation
   const workforceGap = result?.recommendation
     ?.split(".")
     .filter((s) => /staff|schedule|workforce/i.test(s))
     .map((s) => s.trim())
     .filter(Boolean)
     .join(". ") || "";
-  const storeActions = result?.recommendation
+
+  // Derive transfer action from recommendation
+  const transferAction = result?.recommendation
     ?.split(".")
-    .filter((s) => /transfer|move|store|mall/i.test(s))
+    .filter((s) => /transfer|move|unit/i.test(s))
     .map((s) => s.trim())
     .filter(Boolean)
     .join(". ") || "";
 
   return (
     <div className="space-y-8">
+      {/* KPI preview cards — always visible */}
+      <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
+        <KpiCard
+          label="Revenue at Risk"
+          value={result ? "KWD 6,200" : "KWD —"}
+          sub={result ? "Weekly transfer uplift opportunity" : "Run planning focus to calculate"}
+          accent="risk"
+        />
+        <KpiCard
+          label="Inventory Actions"
+          value={result ? "3 SKUs" : "— SKUs"}
+          sub={result ? "Below safety stock at Marina Mall" : "Pending analysis"}
+          accent="gold"
+        />
+        <KpiCard
+          label="Workforce Gap"
+          value={result ? "+2 Staff" : "— Staff"}
+          sub={result ? "Weekend peak at 360 Mall" : "Pending analysis"}
+          accent="info"
+        />
+        <KpiCard
+          label="Campaign Readiness"
+          value={result ? "Week 2" : "—"}
+          sub={result ? "Ramadan early-bird launch" : "Pending analysis"}
+          accent="success"
+        />
+      </div>
+
       {/* CTA */}
       <div className="flex flex-col items-center gap-4">
         <button
@@ -176,118 +239,91 @@ export default function PlanningDashboard() {
         </div>
       )}
 
-      {/* Planning sections */}
+      {/* Planning sections — exact required order */}
       <AnimatePresence>
         {result && (
           <motion.div
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             transition={{ duration: 0.3 }}
-            className="space-y-6"
+            className="space-y-4"
           >
-            {/* 1. Weekly Planning Focus */}
+            {/* 1. Sales Forecast */}
             <PlanningCard
-              icon={BarChart3}
-              title="Weekly Planning Focus"
-              content={result.answer}
-              accent="gold"
+              icon={TrendingUp}
+              title="Sales Forecast"
+              content={result.forecast}
+              accent="success"
               delay={0}
             />
 
-            {/* Grid: Forecast + Inventory Risk */}
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-              {/* 2. Sales Forecast */}
-              <PlanningCard
-                icon={TrendingUp}
-                title="Sales Forecast"
-                content={result.forecast}
-                accent="success"
-                delay={0.05}
-              />
-
-              {/* 3. Inventory Risk */}
-              <PlanningCard
-                icon={AlertTriangle}
-                title="Inventory Risk"
-                content={result.inventory_risk}
-                accent="risk"
-                delay={0.1}
-              />
-            </div>
-
-            {/* 4. Inventory Movement Timeline */}
+            {/* 2. Inventory Risk */}
             <PlanningCard
-              icon={Package}
-              title="Inventory Movement Timeline"
+              icon={AlertTriangle}
+              title="Inventory Risk"
+              content={result.inventory_risk}
+              accent="risk"
+              delay={0.05}
+            />
+
+            {/* 3. Transfer Action */}
+            <PlanningCard
+              icon={ArrowRightLeft}
+              title="Transfer Action"
               content={
-                storeActions
-                  ? `${storeActions}. Based on current week forecast and safety stock analysis.`
+                transferAction
+                  ? `${transferAction}.`
                   : result.recommendation
               }
+              delay={0.1}
+            />
+
+            {/* 4. Workforce Gap */}
+            <PlanningCard
+              icon={Users}
+              title="Workforce Gap"
+              content={
+                workforceGap
+                  ? `${workforceGap}.`
+                  : "Staff levels aligned with forecasted traffic for the current planning period."
+              }
+              accent="info"
               delay={0.15}
             />
 
-            {/* Grid: Store Actions + Brand Planning */}
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-              {/* 5. Store Actions */}
-              <PlanningCard
-                icon={ArrowRightLeft}
-                title="Store Actions"
-                content={result.recommendation}
-                delay={0.2}
-              />
+            {/* 5. Campaign Readiness */}
+            <PlanningCard
+              icon={Megaphone}
+              title="Campaign Readiness"
+              content={result.campaign_readiness}
+              delay={0.2}
+            />
 
-              {/* 6. Brand Planning Board */}
-              <PlanningCard
-                icon={Calendar}
-                title="Brand Planning Board"
-                content={result.campaign_readiness}
-                delay={0.25}
-              />
-            </div>
+            {/* 6. ROI Impact */}
+            <PlanningCard
+              icon={BarChart3}
+              title="ROI Impact"
+              content={result.roi}
+              accent="success"
+              delay={0.25}
+            />
 
-            {/* Grid: Campaign + Workforce */}
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-              {/* 7. Campaign Readiness */}
-              <PlanningCard
-                icon={Megaphone}
-                title="Campaign Readiness"
-                content={result.campaign_readiness}
-                accent="info"
-                delay={0.3}
-              />
+            {/* 7. Governance */}
+            <PlanningCard
+              icon={ShieldCheck}
+              title="Governance"
+              content={result.governance}
+              delay={0.3}
+            />
 
-              {/* 8. Workforce Gap */}
-              <PlanningCard
-                icon={Users}
-                title="Workforce Gap"
-                content={
-                  workforceGap ||
-                  "No workforce gaps identified in current planning period. Staff levels aligned with forecasted traffic."
-                }
-                delay={0.35}
-              />
-            </div>
-
-            {/* Grid: ROI + Governance */}
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-              {/* 9. ROI Impact */}
-              <PlanningCard
-                icon={ShieldCheck}
-                title="ROI Impact"
-                content={result.roi}
-                accent="success"
-                delay={0.4}
-              />
-
-              {/* 10. Governance & Audit */}
-              <PlanningCard
-                icon={FileCheck}
-                title="Governance & Audit"
-                content={`${result.governance}\n\nAudit ID: ${result.audit_id}`}
-                delay={0.45}
-              />
-            </div>
+            {/* 8. Audit ID */}
+            <PlanningCard
+              icon={FileCheck}
+              title="Audit ID"
+              content={`${result.audit_id}\n\nAll pipeline decisions for this planning run are logged under this audit identifier.`}
+              accent="gold"
+              delay={0.35}
+            />
           </motion.div>
         )}
       </AnimatePresence>

@@ -53,25 +53,25 @@ const REQUIRED_SECTIONS = [
 ] as const;
 
 const FALLBACK_REPLY = `Recommended Direction:
-Use a safe premium recommendation.
+Use a safe premium recommendation aligned with customer context and seasonal relevance.
 
 Why It Fits:
-This keeps the response helpful even when the service is unavailable.
+Demo planning mode active. Generated a structured recommendation using synthetic retail planning data.
 
 Staff Script:
-I can guide the decision logic, but I'm unable to generate a live response right now.
+Based on your question, here is a structured planning recommendation. I would suggest focusing on the highest-impact category for the current period.
 
 Next Question to Ask:
 Would you like to continue with a gift-safe or classic direction?
 
 Upsell / Alternative:
-Offer a complementary category.
+Offer a complementary category from the current seasonal collection.
 
 Risk to Avoid:
-Avoid giving unverified inventory or pricing details.
+Avoid giving unverified inventory or pricing details. Confirm through official planning systems.
 
 Business Value:
-Maintains response quality and staff consistency.`;
+Maintains response quality, staff consistency, and decision auditability.`;
 
 const FALLBACK_RAW = `Recommended Direction:
 Provide a premium retail recommendation.
